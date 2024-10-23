@@ -1,0 +1,58 @@
+.light-style div.dataTables_wrapper div.dataTables_info {
+    color: #a1acb8;
+    text-align: left;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    padding-top: .5rem
+}
+
+div.card-datatable [class*=col-md-] {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important
+}
+
+div.table-responsive>div.dataTables_wrapper>div.row {
+    margin: 0
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination .page-link {
+    padding: .625rem;
+    min-width: calc(2rem + calc(0px * 2));
+    font-size: .75rem;
+    line-height: 1
+}
+
+div.dataTables_wrapper div.dataTables_length select {
+    width: auto;
+    display: inline-block
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+    font-weight: normal;
+    text-align: left;
+    white-space: nowrap
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin: 2px 0;
+    white-space: nowrap;
+    justify-content: flex-end
+}
+
+.dataTables_scroll {
+    margin-bottom: .75rem
+}
+
+div.dataTables_wrapper div.dataTables_length, div.dataTables_wrapper div.dataTables_filter {
+    margin-top: 1rem;
+    margin-bottom: 1rem
+}
+
+div.table-responsive>div.dataTables_wrapper>div.row>div[class^=col-]:first-child {
+    padding-left: 0
+}
+
+div.table-responsive>div.dataTables_wrapper>div.row {
+    margin: 0
+}
