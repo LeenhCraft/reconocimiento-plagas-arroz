@@ -271,7 +271,11 @@ function generateDropdownMenu(row) {
   }
   if (row.delete) {
     options.push(
-      generateDropdownOption("Eliminar", "bx bx-trash", `fntDel(${row.idsubmenu})`)
+      generateDropdownOption(
+        "Eliminar",
+        "bx bx-trash",
+        `fntDel(${row.idsubmenu})`
+      )
     );
   }
   if (!row.edit && !row.delete) {
@@ -303,3 +307,7 @@ function generateDropdownOption(text, iconClass, onClickFunction) {
       `;
   }
 }
+
+$("#btnRecargar").on("click", function () {
+  tb.api().ajax.reload();
+});

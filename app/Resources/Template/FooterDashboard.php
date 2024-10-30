@@ -65,7 +65,7 @@
 <?php
 if (isset($data['js']) && !empty($data['js'])) {
     for ($i = 0; $i < count($data['js']); $i++) {
-        echo '<script src="' . $data['js'][$i] . '"></script>';
+        echo '<script src="' . $data['js'][$i] . '"></script>' . PHP_EOL;
     }
 }
 ?>

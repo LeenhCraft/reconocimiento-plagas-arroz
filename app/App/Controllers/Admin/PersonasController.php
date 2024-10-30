@@ -96,7 +96,8 @@ class PersonasController extends Controller
         if (!empty($existe)) {
             return $this->respondWithError($response, "Ya tiene un usuario registrado con ese nombre.");
         }
-        if (!empty($data["per_foto"]["name"])) {
+        $imagen = "/img/default.png";
+        if ($data["per_foto"]["error"] === 0) {
             try {
                 $imageHandler = new ImageHandler($data["per_foto"]);
                 $responseUpload = $imageHandler
@@ -111,7 +112,7 @@ class PersonasController extends Controller
                     return $this->respondWithError($response, $imageHandler->getErrorMessage());
                 }
                 if ($responseUpload) {
-                    $dataInsert["per_foto"] = "/" . $imageHandler->getPath();
+                    $imagen = "/" . $imageHandler->getPath();
                 }
             } catch (\Throwable $th) {
                 return $this->respondWithError($response, $th->getMessage());
@@ -125,7 +126,7 @@ class PersonasController extends Controller
             "per_email" => strtolower($data['email']),
             "per_direcc" => ucwords($data['address']),
             "per_estado" => $data['status'] ?? 0,
-            "per_foto" => $dataInsert["per_foto"] ?? "/img/default.png",
+            "per_foto" => $imagen,
         ];
 
         $rq = $model->create($dataInsert);
@@ -233,16 +234,8 @@ class PersonasController extends Controller
         if (!empty($existe)) {
             return $this->respondWithError($response, "Ya tiene un usuario registrado con ese nombre.");
         }
-        $dataUpdate = [
-            "per_dni" => $data["dni"] ?? '0',
-            "per_nombre" => ucwords($data['name']),
-            "per_celular" => $data['phone'] ?? '0',
-            "per_email" => strtolower($data['email']),
-            "per_direcc" => ucwords($data['address']),
-            "per_estado" => $data['status'] ?? 0,
-        ];
-
-        if (!empty($data["per_foto"]["name"])) {
+        $imagen = "";
+        if ($data["per_foto"]["error"] === 0) {
             try {
                 $imageHandler = new ImageHandler($data["per_foto"]);
                 $responseUpload = $imageHandler
@@ -257,13 +250,22 @@ class PersonasController extends Controller
                     return $this->respondWithError($response, $imageHandler->getErrorMessage());
                 }
                 if ($responseUpload) {
-                    $dataInsert["per_foto"] = "/" . $imageHandler->getPath();
+                    $imagen = "/" . $imageHandler->getPath();
                 }
             } catch (\Throwable $th) {
                 return $this->respondWithError($response, $th->getMessage());
             }
         }
-
+        $dataUpdate = [
+            "per_dni" => $data["dni"] ?? '0',
+            "per_nombre" => ucwords($data['name']),
+            "per_celular" => $data['phone'] ?? '0',
+            "per_email" => strtolower($data['email']),
+            "per_direcc" => ucwords($data['address']),
+        ];
+        if ($imagen) {
+            $dataUpdate["per_foto"] = $imagen;
+        }
         $rq = $model->update($data['id'], $dataUpdate);
         if (!empty($rq)) {
             // $image = new ImageClass;
@@ -271,7 +273,12 @@ class PersonasController extends Controller
             // if ($image->verificar($_FILES['photo'])) {
             //     $img = $image->cargarImagenUsuario($_FILES['photo'], $rq, "img/person");
             // }
-            return $this->respondWithSuccess($response, "Datos actualizados correctamente");
+            // return $this->respondWithSuccess($response, "Datos actualizados correctamente");
+            return $this->respondWithJson($response, [
+                "status" => true,
+                "msg" => "Datos actualizados correctamente",
+                "data" => $data
+            ]);
         }
         $msg = "Error al guardar los datos";
         return $this->respondWithJson($response, $existe);
@@ -326,18 +333,18 @@ class PersonasController extends Controller
                 return $this->respondWithError($response, $msg);
             }
 
-            // if ($_SESSION["app_r"] === 1) {
-            //     $rq = $model->delete($data["id"]);
-            // } else {
-            $rq = $model->update(
-                $data["id"],
-                [
-                    "per_estado" => 0
-                ]
-            );
-            // }
+            if ($_SESSION["app_r"] === 1) {
+                $rq = $model->delete($data["id"]);
+            } else {
+                $rq = $model->update(
+                    $data["id"],
+                    [
+                        "per_estado" => 0
+                    ]
+                );
+            }
             if (!empty($rq)) {
-                return $this->respondWithSuccess($response, "Datos eliminados correctamente");
+                return $this->respondWithSuccess($response, "Por seguridad, el registro ha sido desactivado");
             }
             return $this->respondWithError($response, "Error al eliminar los datos");
         }

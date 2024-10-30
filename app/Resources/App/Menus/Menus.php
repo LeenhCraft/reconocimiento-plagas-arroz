@@ -1,15 +1,22 @@
 <?php header_web('Template.HeaderDashboard', $data); ?>
 <div class="card">
     <div class="card-header">
-        <?php
-        // if ($data['permisos']['perm_w'] == 1) :
-        ?>
-        <button class="btn btn-primary ft-b" type="button" onclick="openModal();">
-            <i class='bx bx-plus-circle'></i> Nuevo Menus
-        </button>
-        <?php
-        // endif;
-        ?>
+        <div class="d-flex justify-content-between">
+
+            <?php
+            // if ($data['permisos']['perm_w'] == 1) :
+            ?>
+            <button class="btn btn-primary ft-b" type="button" onclick="openModal();">
+                <i class='bx bx-plus-circle'></i> Nuevo Menus
+            </button>
+            <?php
+            // endif;
+            ?>
+            <button id="btnRecargar" class="btn btn-warning" type="button">
+                <i class="fa-solid fa-arrow-rotate-right me-1"></i>
+                Recargar
+            </button>
+        </div>
     </div>
     <div class="table-responsive text-nowrap mb-4">
         <table id="sis_menus" class="table table-hover" width="100%">

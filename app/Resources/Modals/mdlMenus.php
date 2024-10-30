@@ -58,14 +58,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary px-2 py-0">
-                    <span class="btn-icon">
-                        <i class='bx bx-check-double'></i>
-                    </span>
-                    <span class="btn-text">
-                        Guardar
-                    </span>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-shield-halved me-2" aria-hidden="true"></i>
+                    Guardar
                 </button>
             </div>
         </form>

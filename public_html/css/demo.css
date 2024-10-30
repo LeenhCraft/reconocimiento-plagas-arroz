@@ -354,3 +354,12 @@ ul {
 .mostrarimagen {
   max-height: 160px;
 }
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.butter-card-img {
+  height: 180px;
+  object-fit: cover;
+}

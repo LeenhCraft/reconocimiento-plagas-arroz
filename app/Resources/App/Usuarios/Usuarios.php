@@ -1,15 +1,21 @@
 <?php header_web('Template.HeaderDashboard', $data); ?>
 <div class="card">
     <div class="card-header">
-        <?php
-        if ($data['permisos']['perm_w'] == 1) {
-        ?>
-            <button id="btnNuevo" type="button" class="btn btn-primary">
-                Agregar
+        <div class="d-flex justify-content-between">
+            <?php
+            if ($data['permisos']['perm_w'] == 1) {
+            ?>
+                <button id="btnNuevo" type="button" class="btn btn-primary">
+                    Agregar
+                </button>
+            <?php
+            }
+            ?>
+            <button id="btnRecargar" class="btn btn-warning" type="button">
+                <i class="fa-solid fa-arrow-rotate-right me-1"></i>
+                Recargar
             </button>
-        <?php
-        }
-        ?>
+        </div>
     </div>
     <div class="table-responsive text-nowrap mb-4">
         <table id="tb" class="table table-hover" width="100%">

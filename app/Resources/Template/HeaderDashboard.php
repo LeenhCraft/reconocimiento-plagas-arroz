@@ -70,7 +70,7 @@
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="/img/default.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        <img src="<?= $arrData["foto"] ?>" alt class="w-100 rounded-circle object-fit-cover" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -79,7 +79,7 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="/img/default.png" alt class="w-px-40 h-auto rounded-circle" />
+                                                        <img src="<?= $arrData["foto"] ?>" alt class="w-100 rounded-circle object-fit-cover" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">

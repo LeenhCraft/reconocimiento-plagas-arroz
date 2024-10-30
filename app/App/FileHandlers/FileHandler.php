@@ -95,7 +95,6 @@ class FileHandler
 
     public function upload()
     {
-        dep("filehandler");
         try {
             if (!$this->validateFile()) {
                 return false;

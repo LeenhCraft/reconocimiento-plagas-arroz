@@ -118,6 +118,7 @@ function usuario()
         ->select(
             "sis_personal.per_nombre as nombre",
             "sis_rol.rol_nombre as rol",
+            "sis_personal.per_foto as foto",
         )
         ->join("sis_personal", "sis_personal.idpersona", "sis_usuarios.idpersona")
         ->join("sis_rol", "sis_rol.idrol", "sis_usuarios.idrol")

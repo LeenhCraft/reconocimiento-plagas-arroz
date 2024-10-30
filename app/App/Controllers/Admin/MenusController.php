@@ -80,7 +80,7 @@ class MenusController extends Controller
             "men_url" => $data['url'] ?? "#",
             "men_controlador" => $data['controller'] ?? null,
             // "men_icono" => !empty($data['icon']) ? $data['icon'] : "bx-circle",
-            "men_icono" => $data['icon'] ?: "bx-circle",
+            "men_icono" => $data['icon'] ?: "bx bx-circle",
             "men_url_si" => isset($data['url_si']) && $data['url_si'] == "on" ? '1' : "0",
             "men_orden" => $data['order'] ?: '1',
             "men_visible" => $data['visible'] ?: "0"
@@ -163,7 +163,7 @@ class MenusController extends Controller
             "men_url" => $data['url'] ?? "#",
             "men_controlador" => $data['controller'] ?? null,
             // "men_icono" => !empty($data['icon']) ? $data['icon'] : "bx-circle",
-            "men_icono" => $data['icon'] ?: "bx-circle",
+            "men_icono" => $data['icon'] ?: "bx bx-circle",
             "men_url_si" => isset($data['url_si']) && $data['url_si'] == "on" ? '1' : "0",
             "men_orden" => $data['order'] ?: '1',
             "men_visible" => $data['visible'] ?: "0"

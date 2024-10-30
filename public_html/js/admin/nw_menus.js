@@ -267,3 +267,7 @@ function generateDropdownOption(text, iconClass, onClickFunction) {
       `;
   }
 }
+
+$("#btnRecargar").on("click", function () {
+  tb.api().ajax.reload();
+});

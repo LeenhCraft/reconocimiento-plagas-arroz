@@ -264,3 +264,7 @@ $(document).on("change", "#idmenu", function () {
     }
   });
 });
+
+$("#btnRecargar").on("click", function () {
+  tb.api().ajax.reload();
+});

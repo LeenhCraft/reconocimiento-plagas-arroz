@@ -65,7 +65,7 @@
                 <div class="card">
                     <div class="card-body card-content">
                         <!-- Logo -->
-                        <div class="app-brand justify-content-center">
+                        <div class="app-brand justify-content-center mb-3">
                             <a href="/admin/login" class="app-brand-link gap-2">
                                 <picture>
                                     <source srcset="/img/logo-dark.png" type="image/webp">
@@ -74,7 +74,7 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2 text-center text-md-start">Laboratorio UCSS</h4>
+                        <h4 class="mb-2 text-center ff-niconne fs-1"><?= $_ENV["APP_NAME"] ?></h4>
                         <form id="frmlogin" class="mb-3">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Usuario</label>
@@ -109,7 +109,7 @@
                                 </picture>
                             </a>
                         </div>
-                        <h4 class="fs-1 ff-niconne mb-2 text-center">Laboratorio Ucss</h4>
+                        <h4 class="fs-1 ff-niconne mb-2 text-center"><?= $_ENV["APP_NAME"] ?></h4>
                         <p class="fs-2 text-center text-success">Redirigiendo...</p>
                     </div>
                 </div>

@@ -53,7 +53,9 @@ function listRoles() {
     .done(function (data) {
       if (data.status) {
         $("#idrol").empty();
-        $("#idrol").append("<option value='' checked>Seleccione una opción</option>");
+        $("#idrol").append(
+          "<option value='' checked>Seleccione una opción</option>"
+        );
         $.each(data.data, function (index, value) {
           $("#idrol").append(
             "<option value=" + value.id + ">" + value.nombre + "</option>"
@@ -152,6 +154,10 @@ $("#btnNuevo").on("click", function () {
   $("#modalFormUsuario").modal("show");
 });
 
+$("#btnRecargar").on("click", function () {
+  tb.api().ajax.reload();
+});
+
 $("#user_form").submit(function (e) {
   e.preventDefault();
   divLoading.css("display", "flex");
@@ -203,6 +209,7 @@ function funEditar(id) {
       $("#user").val(response.data.usu_usuario);
       $("#status").val(response.data.usu_estado);
       $("#idrol").val(response.data.idrol).trigger("change");
+      $("#idpersona").val(response.data.idpersona).trigger("change");
       $("#modalFormUsuario").modal("show");
     })
     .fail(function (jqXHR, textStatus, errorThrown) {

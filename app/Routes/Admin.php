@@ -13,6 +13,10 @@ use App\Controllers\Admin\SubMenusController;
 use App\Controllers\Admin\UsuariosController;
 use App\Controllers\Login\LoginController;
 use App\Controllers\Login\LogoutController;
+use App\Controllers\ModuloIA\EntrenamientoController;
+use App\Controllers\ModuloIA\GenerarDatosController;
+use App\Controllers\ModuloIA\IAController;
+use App\Controllers\ModuloIA\PlagasController;
 
 // Middlewares
 use App\Middleware\AdminMiddleware;
@@ -28,6 +32,7 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
     $group->get("", DashboardController::class . ':index');
     $group->get("/logout", LogoutController::class . ':admin');
 
+    // Rutas relacionadas al nucleo del sistema
     $group->group('/menus', function (RouteCollectorProxy $group) {
         $group->get('', MenusController::class . ':index');
         $group->post('', MenusController::class . ':list');
@@ -89,4 +94,34 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post('/update', RolesController::class . ':update');
         $group->post('/delete', RolesController::class . ':delete');
     })->add(PermissionMiddleware::class);
+
+    // Rutas relacionadas al Modelo IA
+    $group->group('/datos', function (RouteCollectorProxy $group) {
+        $group->get('', GenerarDatosController::class . ':index');
+        $group->post('', GenerarDatosController::class . ':store');
+    });
+
+    $group->group('/entrenar', function (RouteCollectorProxy $group) {
+        $group->get('', EntrenamientoController::class . ':index');
+        $group->post('', EntrenamientoController::class . ':store');
+    });
+
+    $group->group('/prediccion', function (RouteCollectorProxy $group) {
+        $group->get('', IAController::class . ':index');
+        $group->post('', IAController::class . ':store');
+    });
+
+    // Rutas relacionadas a las plagas y enfermedades del arroz
+    $group->group('/plagas', function (RouteCollectorProxy $group) {
+        $group->get('', PlagasController::class . ':index');
+        $group->get('/[{slug}]', PlagasController::class . ':verPlaga');
+
+        $group->post('', PlagasController::class . ':list');
+        $group->post('/save', PlagasController::class . ':store');
+        $group->post('/search', PlagasController::class . ':search');
+        $group->post('/update', PlagasController::class . ':update');
+        $group->post('/delete', PlagasController::class . ':delete');
+        $group->post('/view', PlagasController::class . ':viewImgEntre');
+        $group->post("/upload", PlagasController::class . ":uploadImgEntre");
+    });
 })->add(new LoginAdminMiddleware());
