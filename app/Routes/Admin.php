@@ -123,5 +123,6 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post('/delete', PlagasController::class . ':delete');
         $group->post('/view', PlagasController::class . ':viewImgEntre');
         $group->post("/upload", PlagasController::class . ":uploadImgEntre");
+        $group->post("/destroy", PlagasController::class . ":delImgEntre");
     });
 })->add(new LoginAdminMiddleware());

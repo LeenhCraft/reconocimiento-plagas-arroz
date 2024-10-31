@@ -173,18 +173,18 @@ $(document).ready(function () {
     $(".especie-entre").hide("fast");
   });
   $(".btn-especie-delete").click(function () {
-    let id = $("#idespecie").val();
+    let id = $("#idenfermedad").val();
     Swal.fire({
-      title: "Eliminar Especie",
-      text: "¿Realmente quiere eliminar esta especie?",
+      title: "Eliminar Plaga",
+      text: "¿Realmente quiere eliminar esta plaga? este proceso eliminara las imagenes de entrenamiento tambien.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Si, eliminar!",
       cancelButtonText: "No, cancelar!",
     }).then((result) => {
       if (result.isConfirmed) {
-        let ajaxUrl = base_url + "admin/especies/delete";
-        $.post(ajaxUrl, { idespecie: id }, function (data) {
+        let ajaxUrl = base_url + "admin/plagas/delete";
+        $.post(ajaxUrl, { idenfermedad: id }, function (data) {
           if (data.status) {
             Swal.fire({
               title: "Eliminado!",
@@ -192,7 +192,7 @@ $(document).ready(function () {
               icon: "success",
               confirmButtonText: "ok",
             }).then((result) => {
-              window.history.back();
+              window.location.href = base_url + "admin/plagas";
             });
           } else {
             Swal.fire({
@@ -315,7 +315,7 @@ function delete_img(ths, path) {
     cancelButtonText: "No, cancelar!",
   }).then((result) => {
     if (result.isConfirmed) {
-      let ajaxUrl = base_url + "admin/especies/destroy";
+      let ajaxUrl = base_url + "admin/plagas/destroy";
       let data = new FormData();
       data.append("ruta", path);
       $.ajax({

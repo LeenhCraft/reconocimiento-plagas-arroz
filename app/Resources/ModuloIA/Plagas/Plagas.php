@@ -11,35 +11,10 @@
     </div>
     <div class="card-body">
         <div class="mt-4 row">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-lg-8">
                 <div class="input-group input-group-merge rounded-pill">
                     <span class="input-group-text"><i class="bx bx-search"></i></span>
-                    <input type="text" class="form-control" placeholder="Buscar por nombre comun o cientifico de la plaga o enfermedad">
-                </div>
-            </div>
-            <div class="col-12 col-md-6 d-flex">
-                <div class="form-check m-0 my-auto me-3">
-                    <label class="form-check-label fw-bold">
-                        Filtrar por:
-                    </label>
-                </div>
-                <div class="form-check m-0 my-auto me-3">
-                    <input name="default-radio-1" class="form-check-input" type="radio" value="todo" id="todo" checked>
-                    <label class="form-check-label" for="todo">
-                        Todo
-                    </label>
-                </div>
-                <div class="form-check m-0 my-auto me-3">
-                    <input name="default-radio-1" class="form-check-input" type="radio" value="plagas" id="plagas">
-                    <label class="form-check-label" for="plagas">
-                        Plagas
-                    </label>
-                </div>
-                <div class="form-check m-0 my-auto me-3">
-                    <input name="default-radio-1" class="form-check-input" type="radio" value="enfermedades" id="enfermedades">
-                    <label class="form-check-label" for="enfermedades">
-                        Enfermedades
-                    </label>
+                    <input id="search-input" type="text" class="form-control" placeholder="Buscar por nombre comun o cientifico de la plaga o enfermedad">
                 </div>
             </div>
         </div>

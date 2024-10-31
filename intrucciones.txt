@@ -1,0 +1,10 @@
+Se necesita instaalr el software anaconda, un manejador de paquetes ara python, para poder ejecutar el programa.
+
+con conda tendra que crear un entorno virtual para las bibliotecas para que no haya problemas de compatibilidad.
+conda create --name plagasArroz python=3.10
+conda activate plagazArroz
+
+conda env list #para ver los entornos virtuales
+
+# Cponsiderar el redimensionamiento de las imagenes para que el modelo pueda procesarlas
+considerar el uso de Yolo v5

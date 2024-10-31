@@ -6,6 +6,7 @@ use App\Core\Controller;
 use App\Core\ErrorController;
 use App\FileHandlers\ImageHandler;
 use App\Models\TableModel;
+use Exception;
 
 class PlagasController extends Controller
 {
@@ -37,6 +38,11 @@ class PlagasController extends Controller
             'js' => $js,
             'list' => $this->listGet()
         ]);
+    }
+
+    public function list($request, $response)
+    {
+        return $this->respondWithJson($response, $this->listGet());
     }
 
     private function listGet()
@@ -372,5 +378,76 @@ class PlagasController extends Controller
             return $this->respondWithError($response, $th->getMessage());
         }
         return $this->respondWithError($response, $msg);
+    }
+
+
+    public function delete($request, $response)
+    {
+        $data = $this->sanitize($request->getParsedBody());
+        if (empty($data["idenfermedad"])) {
+            return $this->respondWithError($response, "Error de validación, por favor recargue la página");
+        }
+
+        $model = new TableModel;
+        $model->setTable("re_enfermedades");
+        $model->setId("idenfermedad");
+        $rq = $model->find($data["idenfermedad"]);
+
+        if (!empty($rq)) {
+            try {
+                // Eliminar imagen principal de la enfermedad
+                if (!empty($rq['imagen_url'])) {
+                    $imagePath = $_SERVER['DOCUMENT_ROOT'] . $rq['imagen_url'];
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+
+                // Eliminar imágenes de entrenamiento
+                $trainingPath = $_SERVER['DOCUMENT_ROOT'] . '/img/entrenamiento/' . $rq['slug'];
+                if (is_dir($trainingPath)) {
+                    $files = glob($trainingPath . '/*');
+                    foreach ($files as $file) {
+                        if (is_file($file)) {
+                            unlink($file);
+                        }
+                    }
+                    rmdir($trainingPath);
+                }
+
+                // Eliminar registro de la base de datos
+                $result = $model->delete($data["idenfermedad"]);
+
+                if ($result) {
+                    return $this->respondWithSuccess($response, "Registro eliminado correctamente");
+                } else {
+                    return $this->respondWithError($response, "Error al eliminar el registro");
+                }
+            } catch (Exception $e) {
+                return $this->respondWithError($response, "Error al eliminar: " . $e->getMessage());
+            }
+        }
+
+        return $this->respondWithError($response, "No se encontraron datos para eliminar.");
+    }
+
+    // funcion para eliminar imagenes de entrenamiento
+    public function delImgEntre($request, $response)
+    {
+        $data = $this->sanitize($request->getParsedBody());
+        // verificar que no este vacio $data["path]
+        if (empty($data["ruta"])) {
+            return $this->respondWithError($response, "Error de validación, por favor recargue la página");
+        }
+        $filePath = $data["ruta"];
+        $msg = "Error al guardar los datos";
+
+        if (file_exists($filePath)) {
+            unlink($filePath); // Elimina el archivo
+            return $this->respondWithSuccess($response, "Imagen eliminada correctamente");
+        } else {
+            return $this->respondWithError($response, "El archivo no existe");
+        }
+        return $this->respondWithError($response, "No se pudo procesar, por favor recargue la página");
     }
 }
