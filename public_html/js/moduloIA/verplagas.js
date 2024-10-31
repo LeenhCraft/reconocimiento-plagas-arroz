@@ -52,9 +52,9 @@ $(document).ready(function () {
         if (data.status) {
           // data.data.es_imagen_url no este vacio
           if (data.data.imagen_url != "") {
+            // quitar el ultimo / a base_url
             view.html(
-              `<img class="card-img-top preview" src="` +
-                base_url +
+              `<img class="card-img-top preview w-px-300 h-px-300 object-fit-cover" src="` +
                 data.data.imagen_url +
                 `" alt="Card image cap">`
             );

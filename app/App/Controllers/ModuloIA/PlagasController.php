@@ -79,7 +79,7 @@ class PlagasController extends Controller
                     ->setMinSize(1024) // Mínimo de 1KB
                     ->setMaxSize(10485760) // Máximo de 10MB
                     ->setMime(['image/jpeg', 'image/png', 'image/gif'])
-                    ->setStorage('img/enfermedades', 0755) // Carpeta de almacenamiento
+                    ->setStorage('img/plagas', 0755) // Carpeta de almacenamiento
                     ->upload();
 
                 if (!$responseUpload) {
@@ -204,7 +204,7 @@ class PlagasController extends Controller
                     ->setMinSize(1024) // Mínimo de 1KB
                     ->setMaxSize(10485760) // Máximo de 10MB
                     ->setMime(['image/jpeg', 'image/png', 'image/gif'])
-                    ->setStorage('img/enfermedades', 0755) // Carpeta de almacenamiento
+                    ->setStorage('img/plagas', 0755) // Carpeta de almacenamiento
                     ->upload();
 
                 if (!$responseUpload) {

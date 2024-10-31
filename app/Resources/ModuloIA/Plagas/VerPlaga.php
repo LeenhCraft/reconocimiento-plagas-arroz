@@ -26,7 +26,11 @@
         <div class="row">
             <input type="hidden" id="idenfermedad" name="idenfermedad" value="<?= $data["data"]["idenfermedad"] ?>">
             <div class="col-12 col-md-4 mb-4">
-                <img class="w-100 border rounded-3" src="<?= !empty($data["data"]["imagen_url"]) ? base_url() . $data["data"]["imagen_url"] : base_url() . 'img/default.png' ?>" alt="<?= $data["data"]["nombre"] ?>">
+                <?php
+                $url = trim(base_url(), '/');
+                $url = !empty($data["data"]["imagen_url"]) ? $url . $data["data"]["imagen_url"] : base_url() . 'img/default.png'
+                ?>
+                <img class="border rounded-3 w-px-300 h-px-300 object-fit-cover" src="<?= $url ?>" alt="<?= $data["data"]["nombre"] ?>">
             </div>
             <div class="col-12 col-md-8 mb-4">
                 <div class="d-flex flex-column">
@@ -89,7 +93,7 @@
                             </div>
                             <div class="col-12 col-md-8">
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-name">Nombre Comun  <span class="fw-bold text-danger">*</span></label>
+                                    <label class="col-sm-2 col-form-label" for="basic-default-name">Nombre Comun <span class="fw-bold text-danger">*</span></label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="es_nombre_comun" name="nombre">
                                     </div>
@@ -132,7 +136,7 @@
                     <div class="row">
                         <input type="hidden" id="idenfermedad-entrenar" name="idenfermedad" value="<?= $data["data"]["idenfermedad"] ?>">
                         <div class="col-12 col-md-4">
-                            <img class="w-100" src="<?= !empty($data["data"]["imagen_url"]) ? base_url() . $data["data"]["imagen_url"] : base_url() . 'img/default.png' ?>" alt="<?= $data["data"]["nombre"] ?>">
+                            <img class="w-px-300 h-px-300 object-fit-cover" src="<?= !empty($data["data"]["imagen_url"]) ? base_url() . $data["data"]["imagen_url"] : base_url() . 'img/default.png' ?>" alt="<?= $data["data"]["nombre"] ?>">
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="d-flex flex-column">
