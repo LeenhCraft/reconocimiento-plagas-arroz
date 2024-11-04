@@ -66,6 +66,8 @@ function strClean($strCadena)
 
 function dep($data, $exit = 0)
 {
+    // agregar codificación utf-8
+    header('Content-Type: text/html; charset=utf-8');
     $format  = print_r('<pre>');
     $format .= print_r($data);
     $format .= print_r('</pre>');

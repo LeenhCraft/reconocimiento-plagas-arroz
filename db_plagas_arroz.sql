@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 31-10-2024 a las 18:01:41
+-- Tiempo de generación: 04-11-2024 a las 23:50:07
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -39,7 +39,30 @@ CREATE TABLE `re_configuracion` (
 --
 
 INSERT INTO `re_configuracion` (`idconfig`, `nombre`, `valor`, `date`) VALUES
-(2, 'valor', '{\"carpeta_img_entrenamiento\":\"img\\/entrenamiento\",\"ruta_datos_entrenamiento\":\"entrenamiento\",\"nombre_datos_entrenamiento\":\"entrenamiento\"}', '2024-10-29 09:20:45');
+(2, 'valor', '{\"carpeta_img_entrenamiento\":\"img\\/entrenamiento\",\"ruta_datos_entrenamiento\":\"entrenamiento\",\"nombre_datos_entrenamiento\":\"entrenamiento\",\"ruta_datos_generados\":\"data\\/\",\"nombre_modelo\": \"modelo-yolo-v5/\",\"ruta_modelo\": \"modelo\"}', '2024-10-29 09:20:45');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `re_datos_generados`
+--
+
+CREATE TABLE `re_datos_generados` (
+  `identrenamiento` int NOT NULL,
+  `code` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stats` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `yaml` text COLLATE utf8mb4_unicode_ci,
+  `summary` text COLLATE utf8mb4_unicode_ci,
+  `ent_default` tinyint(1) NOT NULL DEFAULT '0',
+  `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `re_datos_generados`
+--
+
+INSERT INTO `re_datos_generados` (`identrenamiento`, `code`, `stats`, `yaml`, `summary`, `ent_default`, `fecha_registro`) VALUES
+(1, '20241104145927', '{\"train\":{\"total\":323,\"by_class\":{\"Falso medidor\":67,\"Gusano enrollador de la hoja\":48,\"Caracol manzana\":74,\"Sogata del arroz\":69,\"Gusano cogollero\":65}},\"val\":{\"total\":84,\"by_class\":{\"Falso medidor\":17,\"Caracol manzana\":19,\"Gusano cogollero\":17,\"Gusano enrollador de la hoja\":13,\"Sogata del arroz\":18}},\"total_images\":407,\"images_by_class\":{\"Caracol manzana\":93,\"Falso medidor\":84,\"Gusano cogollero\":82,\"Gusano enrollador de la hoja\":61,\"Sogata del arroz\":87}}', '{\"success\":true,\"yaml_path\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\\\\data.yaml\",\"config\":{\"path\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\",\"train\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\\\\train\\\\images\",\"val\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\\\\val\\\\images\",\"nc\":5,\"names\":[\"Caracol manzana\",\"Falso medidor\",\"Gusano cogollero\",\"Gusano enrollador de la hoja\",\"Sogata del arroz\"]}}', '{\"total_processed\":407,\"train_total\":323,\"val_total\":84,\"errors_count\":0,\"processing_success_rate\":100}', 1, '2024-11-04 14:59:27');
 
 -- --------------------------------------------------------
 
@@ -62,22 +85,11 @@ CREATE TABLE `re_enfermedades` (
 --
 
 INSERT INTO `re_enfermedades` (`idenfermedad`, `nombre`, `slug`, `imagen_url`, `descripcion`, `desactivado`, `fecha_registro`) VALUES
-(1, 'Sin especificar', 'sin-especificar', NULL, '', 0, '2024-10-29 21:05:22'),
-(2, 'Piricularia', 'piricularia', '/img/enfermedades/piricularia.jpg', '<p>Tambi&eacute;n conocida como quemado del arroz. Causa lesiones en hojas, tallos y granos. Causada por Magnaporthe oryzae.</p>', 0, '2024-10-29 21:05:23'),
-(3, 'Helmintosporiosis', 'helmintosporiosis', '/img/enfermedades/helmintosporiosis.jpg', '<p>Manchas marrones en hojas y granos. Causada por Bipolaris oryzae.</p>', 0, '2024-10-29 21:05:23'),
-(4, 'Cercosporiosis', 'cercosporiosis', '/img/enfermedades/cercosporiosis.jpg', '<p>Manchas estrechas y alargadas en hojas. Causada por Cercospora oryzae.</p>', 0, '2024-10-29 21:05:23'),
-(5, 'Escaldado de la hoja', 'escaldado-de-la-hoja', '/img/enfermedades/escaldado-de-la-hoja.jpg', '<p>Lesiones que parecen escaldaduras por agua caliente. Causada por Rhynchosporium oryzae.</p>', 0, '2024-10-29 21:05:23'),
-(6, 'Añublo bacterial', 'anublo-bacterial', '/img/enfermedades/anublo-bacterial.png', '<p>Lesiones amarillentas en hojas que se vuelven blancas. Causada por Xanthomonas oryzae.</p>', 0, '2024-10-29 21:05:23'),
-(7, 'Pudrición bacterial del tallo', 'pudricion-bacterial-del-tallo', '/img/enfermedades/pudricion-bacterial-del-tallo.jpg', '<p>Pudrici&oacute;n en la base del tallo. Causada por Pseudomonas fuscovaginae.</p>', 0, '2024-10-29 21:05:23'),
-(8, 'Virus de la hoja blanca', 'virus-de-la-hoja-blanca', '/img/enfermedades/virus-de-la-hoja-blanca.png', '<p>Decoloraci&oacute;n blancuzca en hojas. Transmitido por sogata.</p>', 0, '2024-10-29 21:05:23'),
-(9, 'Virus del enanismo', 'virus-del-enanismo', '/img/enfermedades/virus-del-enanismo.jpg', '<p>Reduce altura de planta y causa enanismo. Transmitido por insectos.</p>', 0, '2024-10-29 21:05:23'),
-(10, 'Sogata', 'sogata', '/img/enfermedades/sogata.jpg', '<p>Insecto que succiona savia y transmite virus de hoja blanca.</p>', 0, '2024-10-29 21:05:23'),
-(11, 'Gorgojo acuático', 'gorgojo-acuatico', '/img/enfermedades/gorgojo-acuatico.jpg', '<p>Da&ntilde;a ra&iacute;ces y base del tallo en campos inundados.</p>', 0, '2024-10-29 21:05:23'),
-(12, 'Chinche del arroz', 'chinche-del-arroz', '/img/enfermedades/chinche-del-arroz.jpg', '<p>Da&ntilde;a granos en formaci&oacute;n afectando calidad.</p>', 0, '2024-10-29 21:05:23'),
-(13, 'Barrenador del tallo', 'barrenador-del-tallo', '/img/enfermedades/barrenador-del-tallo.jpg', '<p>Larva que perfora y da&ntilde;a tallos causando muerte.</p>', 0, '2024-10-29 21:05:23'),
-(14, 'Deficiencia de Nitrógeno', 'deficiencia-de-nitrogeno', '/img/enfermedades/deficiencia-de-nitrogeno.jpg', '<p>Amarillamiento generalizado de hojas viejas.</p>', 0, '2024-10-29 21:05:23'),
-(15, 'Deficiencia de Zinc', 'deficiencia-de-zinc', '/img/enfermedades/deficiencia-de-zinc.jpeg', '<p>Clorosis intervenal en hojas j&oacute;venes.</p>', 0, '2024-10-29 21:05:23'),
-(16, 'Toxicidad por hierro', 'toxicidad-por-hierro', '/img/enfermedades/toxicidad-por-hierro.jpg', '<p>Puntos marrones en hojas viejas.</p>', 0, '2024-10-29 21:05:23');
+(6, 'Gusano enrollador de la hoja', 'gusano-enrollador-de-la-hoja', '/img/plagas/gusano-enrollador-de-la-hoja.png', '<p>Gusano enrollador de la hoja - Cnaphalocrocis medinalis (Lepidoptera: Crambinae)</p>', 0, '2024-11-02 15:05:37'),
+(7, 'Caracol manzana', 'caracol-manzana', '/img/plagas/caracol-manzana.png', '', 0, '2024-11-02 15:06:33'),
+(8, 'Falso medidor', 'falso-medidor', '/img/plagas/falso-medidor.jpg', '', 0, '2024-11-02 15:06:40'),
+(9, 'Gusano cogollero', 'gusano-cogollero', '/img/plagas/gusano-cogollero.png', '', 0, '2024-11-02 15:06:45'),
+(10, 'Sogata del arroz', 'sogata-del-arroz', '/img/plagas/sogata-del-arroz.jpg', '', 0, '2024-11-02 15:06:53');
 
 -- --------------------------------------------------------
 
@@ -179,10 +191,8 @@ CREATE TABLE `sis_personal` (
 --
 
 INSERT INTO `sis_personal` (`idpersona`, `per_dni`, `per_nombre`, `per_celular`, `per_email`, `per_direcc`, `per_foto`, `per_estado`, `per_fecha`) VALUES
-(1, 76144152, 'Admin', 987654321, 'admin@admin', '', '/images/personal/leenh-alexander.jpg', 1, '2022-07-22 01:09:20'),
-(2, 76144151, 'Naomi Bustamante Fernandez', 123, 'nao@gmail.com', 'Por Donde', '/images/personal/naomi-bustamante.jpg', 0, '2024-10-22 21:34:55'),
-(3, 76144151, 'Naomi Bustamante Fernandez', 964897058, 'nao@gmail.com', '', '/img/default.png', 1, '2024-10-22 22:06:37'),
-(4, 76144153, 'Personal 1', 23123, 'a@a.com', '', '/images/personal/personal-12.jpg', 0, '2024-10-22 22:41:47');
+(1, 1, 'Personal Developer', 987654321, 'developer@developer.com', '', '/images/personal/developer.png', 1, '2022-07-22 01:09:20'),
+(3, 2, 'Personal Administrador', 964897058, 'admin@admin.com', '', '/img/default.png', 1, '2024-10-22 22:06:37');
 
 -- --------------------------------------------------------
 
@@ -284,6 +294,12 @@ ALTER TABLE `re_configuracion`
   ADD PRIMARY KEY (`idconfig`);
 
 --
+-- Indices de la tabla `re_datos_generados`
+--
+ALTER TABLE `re_datos_generados`
+  ADD PRIMARY KEY (`identrenamiento`);
+
+--
 -- Indices de la tabla `re_enfermedades`
 --
 ALTER TABLE `re_enfermedades`
@@ -342,16 +358,22 @@ ALTER TABLE `re_configuracion`
   MODIFY `idconfig` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `re_datos_generados`
+--
+ALTER TABLE `re_datos_generados`
+  MODIFY `identrenamiento` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `re_enfermedades`
 --
 ALTER TABLE `re_enfermedades`
-  MODIFY `idenfermedad` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `idenfermedad` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_centinela`
 --
 ALTER TABLE `sis_centinela`
-  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7190;
+  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8417;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_menus`

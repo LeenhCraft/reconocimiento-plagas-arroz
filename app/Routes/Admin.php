@@ -98,12 +98,14 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
     // Rutas relacionadas al Modelo IA
     $group->group('/datos', function (RouteCollectorProxy $group) {
         $group->get('', GenerarDatosController::class . ':index');
+        $group->get('/list', GenerarDatosController::class . ':list');
         $group->post('', GenerarDatosController::class . ':store');
+        $group->post('/generar', GenerarDatosController::class . ':generarDatos');
     });
 
     $group->group('/entrenar', function (RouteCollectorProxy $group) {
         $group->get('', EntrenamientoController::class . ':index');
-        $group->post('', EntrenamientoController::class . ':store');
+        $group->post('', EntrenamientoController::class . ':entrenarModelo');
     });
 
     $group->group('/prediccion', function (RouteCollectorProxy $group) {

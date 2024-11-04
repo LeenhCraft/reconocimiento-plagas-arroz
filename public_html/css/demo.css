@@ -363,3 +363,20 @@ ul {
   height: 180px;
   object-fit: cover;
 }
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.fs-7 {
+  font-size: 0.875rem;
+}
+
+.class-pill {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}

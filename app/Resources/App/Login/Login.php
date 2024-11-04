@@ -46,7 +46,7 @@
             <div class="authentication-inner">
                 <div class="divLoading" style="display: none;">
                     <div>
-                        <img src="/img/loading.svg" alt="Loading">
+                        <img src="/svg/loading.svg" alt="Loading">
                     </div>
                 </div>
                 <!-- Register -->
@@ -118,9 +118,6 @@
         </div>
     </div>
     <!-- / Content -->
-    <script>
-        const base_url = "<?php echo base_url(); ?>";
-    </script>
     <!-- Core JS -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/popper.min.js"></script>
@@ -133,6 +130,7 @@
     <script src="/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <!--  -->
     <script>
+        const base_url = "<?php echo base_url(); ?>";
         var divLoading = $(".divLoading");
         const Toast = Swal.mixin({
             toast: true,

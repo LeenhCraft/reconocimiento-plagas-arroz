@@ -3,8 +3,9 @@
 // use Slim\App;
 
 // Controllers
-use App\Controllers\Home\HomeController;
+use App\Controllers\Login\LoginController;
 
 // Middlewares
+use App\Middleware\AdminMiddleware;
 
-$app->get('/', HomeController::class . ':index');
+$app->get('/', LoginController::class . ':index')->add(new AdminMiddleware);

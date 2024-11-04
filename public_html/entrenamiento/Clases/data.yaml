@@ -1,0 +1,10 @@
+path: C:\laragon\www\plagas-arroz\public_html\entrenamiento\Clases
+train: C:\laragon\www\plagas-arroz\public_html\entrenamiento\Clases\train\images
+val: C:\laragon\www\plagas-arroz\public_html\entrenamiento\Clases\val\images
+nc: 5
+names:
+- Caracol manzana
+- Falso medidor
+- Gusano cogollero
+- Gusano enrollador de la hoja
+- Sogata del arroz

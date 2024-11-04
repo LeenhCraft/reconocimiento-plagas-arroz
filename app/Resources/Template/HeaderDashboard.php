@@ -39,6 +39,11 @@
 
 <body>
     <div class="layout-wrapper layout-content-navbar">
+        <div id="divLoading">
+            <div>
+                <img src="/svg/loading.svg" alt="Loading">
+            </div>
+        </div>
         <div class="layout-container">
             <!-- Menu -->
             <?php

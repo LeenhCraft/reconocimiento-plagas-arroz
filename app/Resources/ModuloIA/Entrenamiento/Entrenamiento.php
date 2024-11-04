@@ -2,12 +2,16 @@
 <div class="card mb-4">
     <div class="card-header bg-label-primary">
         <h4 class="text-primary fw-bold mb-2">Panel de Control</h4>
+        <p>
+            <input type="hidden" id="uuid" name="uuid" value="<?php echo $data["uuid"] ?>">
+            <?php echo $data["uuid"] ?>
+        </p>
     </div>
     <div class="card-body">
         <p class="text-black pt-4">Gestiona el proceso de entrenamiento del modelo</p>
         <div class="row mb-5 gap-2 gap-md-0">
             <div class="col-12 col-lg-auto me-lg-2">
-                <button type="button" class="btn btn-primary fw-semibold gap-2 w-100">
+                <button id="entrenarModelo" type="button" class="btn btn-primary fw-semibold gap-2 w-100">
                     <i class='bx bx-play-circle fw-normal'></i>
                     Iniciar Entrenamiento
                 </button>
