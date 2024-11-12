@@ -5,4 +5,10 @@ public_html/vendor
 public_html/images
 app/.env
 intrucciones.txt
-public_html/img/entrenamiento/*
+public_html/img/entrenamiento
+public_html/img/plagas
+public_html/.cometml-runs
+public_html/entrenamiento
+public_html/datos_entrenamiento
+public_html/json
+public_html/modelo_entrenado

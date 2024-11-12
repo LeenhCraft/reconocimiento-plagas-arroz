@@ -105,10 +105,12 @@ class GenerarDatosController extends Controller
         foreach ($classes as $item) {
             $nombres[] = $item['nombre'];
         }
+        $marcaTiempo = date("YmdHis");
         $jsoncreado = $this->crearJson([
             "path" => $rutas["ruta_datos_generados"],
             // "nombre_archivo" => uniqid("clases_", true),
-            "nombre_archivo" => "Clases",
+            "nombre_archivo" => "clases_plagas_" . $marcaTiempo,
+            // "nombre_archivo" => "Clases",
             "contenido" => json_encode($nombres)
         ]);
         // END - Obtener las clases de plagas y guardarlas en un json
@@ -118,8 +120,8 @@ class GenerarDatosController extends Controller
         $scriptPath = __DIR__ . "/../ScriptIA/GenerarDatos.py";
         $arg = [
             '--images' => $rutas["carpeta_img_entrenamiento"],
-            // '--output' => $rutas["ruta_datos_entrenamiento"] . "/" . date("YmdHis"),
-            '--output' => $rutas["ruta_datos_entrenamiento"] . "/Clases",
+            '--output' => $rutas["ruta_datos_entrenamiento"] . "/" . date("YmdHis"), // carpeta de salida cuando se generan los datos
+            // '--output' => $rutas["ruta_datos_entrenamiento"] . "/Clases", // carpeta de salida cuando se hacen pruebas
             '--classes' => $jsoncreado["ruta_completa"],
             '--val-split' => 0.2
         ];
@@ -169,7 +171,7 @@ class GenerarDatosController extends Controller
         $model->setTable("re_datos_generados");
         $model->setId("identrenamiento");
         $dataInsert = [
-            "code" => date("YmdHis"),
+            "code" => $marcaTiempo,
             "stats" => json_encode($salida["stats"]),
             "yaml" => json_encode($salida["yaml"]),
             "summary" => json_encode($salida["summary"]),

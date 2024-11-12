@@ -48,7 +48,7 @@
         </div>
     </div>
 </div>
-<div class="card mb-4">
+<div class="card mb-4 d-none">
     <div class="card-header bg-label-primary">
         <h4 class="text-primary fw-bold mb-2">Modelo de IA</h4>
     </div>

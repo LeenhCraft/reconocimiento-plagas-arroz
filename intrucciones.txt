@@ -1,3 +1,9 @@
+CUDA INSTALL (https://www.youtube.com/watch?v=HQ7Ges1dhww)
+    Tener una tarjeta gráfica NVIDIA compatible
+    Tener instalados los drivers de NVIDIA
+    Tener instalado CUDA Toolkit
+    Tener instalada la versión de PyTorch con soporte CUDA
+
 Se necesita instaalr el software anaconda, un manejador de paquetes ara python, para poder ejecutar el programa.
 
 con conda tendra que crear un entorno virtual para las bibliotecas para que no haya problemas de compatibilidad.

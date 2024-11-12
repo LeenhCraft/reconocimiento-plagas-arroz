@@ -92,7 +92,9 @@ $("#generarDatos").click(function (e) {
             title: response.success ? "¡Éxito!" : "Error",
             text: response.message || "Datos generados correctamente",
           });
-
+          if (response.success) {
+            new Audio(base_url + "notificacion.mp3").play();
+          }
           loadAndRenderRecords();
         },
         error: function (error) {

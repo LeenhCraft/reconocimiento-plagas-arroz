@@ -348,9 +348,9 @@ def main(image_path: str, output_path: str, classes_file: str, val_split: float 
             # Actualizar estadísticas del dataset
             results["stats"][dataset]["by_class"] = dataset_counters
         
-        # Generar data.yaml
         logger.print("\nFinalizando...")
         
+        # Generar data.yaml
         yaml_result = create_yaml(str(output_path), list(class_mapping.values()), logger)
 
         if not yaml_result["success"]:

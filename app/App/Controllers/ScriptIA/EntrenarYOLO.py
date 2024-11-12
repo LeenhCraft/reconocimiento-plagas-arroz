@@ -160,7 +160,7 @@ def load_data_config(yaml_path: str, logger: Logger) -> dict:
         return {"success": False, "error": f"Error al cargar data.yaml: {str(e)}"}
 
 def validate_training_params(epochs: int, batch_size: int, img_size: int, 
-                           model_size: str, logger: Logger) -> dict:
+                           model_size: str, device: str, logger: Logger) -> dict:
     """
     Valida los parámetros de entrenamiento.
     
@@ -190,17 +190,22 @@ def validate_training_params(epochs: int, batch_size: int, img_size: int,
             return {
                 "success": False, 
                 "error": f"Tamaño de modelo inválido. Debe ser uno de: {', '.join(VALID_MODEL_SIZES)}"
-            }
+                }
         
+        if device == 'cuda' and not torch.cuda.is_available():
+            return {
+                "success": False,
+                "error": "CUDA solicitado pero no disponible en el sistema"
+                }
         logger.print("Validación de parámetros exitosa")
         return {"success": True}
         
     except Exception as e:
         return {"success": False, "error": f"Error al validar parámetros: {str(e)}"}
 
-def train_model(data_config: dict, output_path: str, epochs: int, 
+def train_model(data_config: dict, output_path: str, name_experiment:str, epochs: int, 
                 batch_size: int, img_size: int, device: str, 
-                logger: Logger, model_size: str) -> dict:
+                logger: Logger, model_size: str, weights: str = None) -> dict:
     """
     Ejecuta el entrenamiento del modelo YOLOv5.
     
@@ -213,6 +218,7 @@ def train_model(data_config: dict, output_path: str, epochs: int,
         device (str): Dispositivo para entrenamiento ('cpu' o 'cuda')
         logger (Logger): Instancia del logger para debugging
         model_size (str): Tamaño del modelo ('n','s','m','l','x')
+        weights (str, optional): Ruta a pesos pre-entrenados
     
     Returns:
         dict: Diccionario con resultados del entrenamiento y estadísticas
@@ -221,9 +227,16 @@ def train_model(data_config: dict, output_path: str, epochs: int,
         logger.print("\n=== Iniciando entrenamiento ===")
         
         # Validar parámetros
-        param_validation = validate_training_params(epochs, batch_size, img_size, model_size, logger)
+        param_validation = validate_training_params(epochs, batch_size, img_size, model_size, device, logger)
         if not param_validation["success"]:
             return param_validation
+        
+        # Si hay pesos, verificar que existan
+        if weights and not os.path.exists(weights):
+            return {
+                "success": False,
+                "error": f"No se encontró el archivo de pesos: {weights}"
+            }
         
         # Importar YOLOv5
         from yolov5 import train
@@ -250,16 +263,17 @@ def train_model(data_config: dict, output_path: str, epochs: int,
             'epochs': epochs,
             'batch_size': batch_size,
             'imgsz': img_size,
-            'weights': None,  # Indica entrenamiento desde cero
+            'weights': weights,  # Indica entrenamiento desde cero
             'cfg': cfg_path,
             'project': output_path,
-            'name': 'exp',
+            'name': name_experiment,
             'device': device,
             'save_period': -1,  # Guardar último y mejor modelo
             'exist_ok': True,
             'patience': 100,    # Early stopping patience
             'workers': 8,
             'freeze': [0],
+            # 'verbose': False # No imprimir logs
         }
         
         # Depurar antes de la serialización
@@ -279,16 +293,29 @@ def train_model(data_config: dict, output_path: str, epochs: int,
       
         # Entrenar modelo
         results = train.run(**args)
+
+        # Obtener rutas de los modelos
+        model_dir = Path(output_path) / name_experiment / 'weights'
+        best_model_path = model_dir / 'best.pt'
+        last_model_path = model_dir / 'last.pt'
         
         # Procesar resultados
         training_stats = {
-            "best_fitness": float(results.best_fitness),
-            "final_epoch": int(results.epoch),
-            "training_time": str(results.duration),
+            "final_epoch": epochs,  # Número total de épocas ejecutadas
+            "training_time": None,  # Se podría implementar midiendo el tiempo de ejecución
             "model_paths": {
-                "best": str(results.best),
-                "last": str(results.last)
-            }
+                "best": str(best_model_path),
+                "last": str(last_model_path)
+            },
+            # "final_metrics": {
+            #     "mAP50": results[2],          # mAP@0.5
+            #     "mAP50_95": results[3],       # mAP@0.5:0.95
+            #     "precision": results[0],       # Precisión
+            #     "recall": results[1],          # Recall
+            #     "box_loss": results[4],        # Pérdida de boxes
+            #     "obj_loss": results[5],        # Pérdida de objectness
+            #     "cls_loss": results[6]         # Pérdida de clasificación
+            # }
         }
         
         logger.print("Entrenamiento completado exitosamente")
@@ -303,9 +330,9 @@ def train_model(data_config: dict, output_path: str, epochs: int,
             "error": f"Error durante el entrenamiento: {str(e)}"
         }
 
-def main(data_yaml: str, output_path: str, epochs: int, 
+def main(data_yaml: str, output_path: str, name_experiment: str, epochs: int, 
          batch_size: int, img_size: int, device: str, 
-         debug: bool, model_size: str, log_file: str = None) -> dict:
+         debug: bool, model_size: str, weights: str = None, log_file: str = None) -> dict:
     """
     Función principal que coordina el entrenamiento.
     
@@ -318,6 +345,7 @@ def main(data_yaml: str, output_path: str, epochs: int,
         device (str): Dispositivo de entrenamiento
         debug (bool): Activar modo debug
         model_size (str): Tamaño del modelo
+        weights (str, optional): Ruta a pesos pre-entrenados
         log_file (str): Ruta opcional al archivo de log
         
     Returns:
@@ -325,6 +353,7 @@ def main(data_yaml: str, output_path: str, epochs: int,
     """
     logger = Logger(debug, log_file)
     try:
+        logger.print("\n=== Iniciando script de entrenamiento ===")
         # Validar rutas
         validation = validate_paths(data_yaml, output_path, logger)
         if not validation["success"]:
@@ -339,21 +368,23 @@ def main(data_yaml: str, output_path: str, epochs: int,
         train_result = train_model(
             data_config=data_yaml,
             output_path=output_path,
+            name_experiment=name_experiment,
             epochs=epochs,
             batch_size=batch_size,
             img_size=img_size,
             device=device,
             logger=logger,
-            model_size=model_size
+            model_size=model_size,
+            weights=weights
         )
         
         if not train_result["success"]:
             return train_result
-            
+        
         # Agregar información adicional al resultado
         train_result["config"] = {
             "data_yaml": data_yaml,
-            "output_path": output_path,
+            "output_path": str(output_path / name_experiment),
             "epochs": epochs,
             "batch_size": batch_size,
             "img_size": img_size,
@@ -376,18 +407,22 @@ if __name__ == "__main__":
                        help='Ruta al archivo data.yaml')
     parser.add_argument('--output', required=True,
                        help='Ruta donde se guardará el modelo entrenado')
+    parser.add_argument('--name', type=str, default='exp',
+                        help='Nombre del experimento (default: exp)')
     parser.add_argument('--epochs', type=int, default=DEFAULT_EPOCHS,
                        help=f'Número de épocas de entrenamiento (default: {DEFAULT_EPOCHS})')
     parser.add_argument('--batch-size', type=int, default=DEFAULT_BATCH_SIZE,
                        help=f'Tamaño del batch (default: {DEFAULT_BATCH_SIZE})')
     parser.add_argument('--img-size', type=int, default=DEFAULT_IMG_SIZE,
                        help=f'Tamaño de las imágenes (default: {DEFAULT_IMG_SIZE})')
-    parser.add_argument('--device', default='',
+    parser.add_argument('--device', type=str, default='0',
                        help='Dispositivo cuda device, i.e. 0 o cpu')
     parser.add_argument('--debug', action='store_true',
                        help='Activa los mensajes de depuración')
     parser.add_argument('--model-size', choices=VALID_MODEL_SIZES, default=DEFAULT_MODEL_SIZE,
                        help='Tamaño del modelo (n=nano, s=small, m=medium, l=large, x=xlarge)')
+    parser.add_argument('--weights', default=None, type=str ,
+                       help='Ruta a pesos pre-entrenados (opcional)')
     parser.add_argument('--log-file',
                        help='Ruta al archivo de log (opcional)')
     
@@ -395,18 +430,22 @@ if __name__ == "__main__":
 
     # obtener la ruta absoluta de args.output usando Path
     args.output = Path(args.output).absolute()
+    args.log_file = Path(args.log_file).absolute()
 
     result = main(
         data_yaml=args.data,
         output_path=args.output,
+        name_experiment=args.name,
         epochs=args.epochs,
         batch_size=args.batch_size,
         img_size=args.img_size,
         device=args.device,
         debug=args.debug,
         model_size=args.model_size,
+        weights=args.weights,
         log_file=args.log_file
     )
-    
+
     # Mostrar resultado en JSON
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    # print(json.dumps(result, indent=2, ensure_ascii=False))
+    print(json.dumps(result, indent=2))
