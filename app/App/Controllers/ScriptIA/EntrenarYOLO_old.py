@@ -18,75 +18,32 @@ class Logger:
     def __init__(self, debug: bool = False, log_file: str = None):
         """
         Inicializa el logger con opciones de debug y archivo de log.
-        Si no se especifica log_file, crea uno por defecto.
         
         Args:
-            debug (bool): Si True, imprime mensajes de debug en consola
+            debug (bool): Si True, imprime mensajes de debug
             log_file (str): Ruta opcional al archivo de log
         """
         self.debug = debug
+        self.log_file = log_file
         
-        # Si no se especifica archivo de log, crear uno por defecto
-        if log_file is None:
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            log_dir = Path('logs')
-            log_dir.mkdir(exist_ok=True)
-            self.log_file = str(log_dir / f'training_{timestamp}.log')
-        else:
-            self.log_file = log_file
-            
-        # Crear directorio de logs
-        os.makedirs(os.path.dirname(self.log_file), exist_ok=True)
-        
-        # Registrar inicio de sesión
-        self.log_to_file(f"=== Inicio de sesión: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
+        # Crear directorio de logs si se especifica archivo
+        if log_file:
+            os.makedirs(os.path.dirname(log_file), exist_ok=True)
+    
     def print(self, message: str):
         """
-        Imprime mensaje en consola si debug está activado y siempre lo guarda en el log.
+        Imprime y registra un mensaje con timestamp si debug está activado.
         
         Args:
             message (str): Mensaje a registrar
         """
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        formatted_message = f'[{timestamp}] {message}'
-        
-        # Siempre escribir al archivo de log
-        self.log_to_file(formatted_message)
-        
-        # Imprimir en consola solo si debug está activado
         if self.debug:
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            formatted_message = f'[{timestamp}] {message}'
             print(formatted_message)
-
-    def log_to_file(self, message: str):
-        """
-        Escribe mensaje en el archivo de log.
-        
-        Args:
-            message (str): Mensaje a registrar
-        """
-        try:
-            with open(self.log_file, 'a', encoding='utf-8') as f:
-                f.write(message + '\n')
-        except Exception as e:
-            if self.debug:
-                print(f"Error escribiendo en log: {str(e)}")
-                
-    def log_dict(self, data: dict, title: str = None):
-        """
-        Registra un diccionario en formato JSON en el log.
-        
-        Args:
-            data (dict): Diccionario a registrar
-            title (str): Título opcional para la sección
-        """
-        try:
-            if title:
-                self.log_to_file(f"\n=== {title} ===")
-            json_str = json.dumps(data, indent=2)
-            self.log_to_file(json_str)
-        except Exception as e:
-            if self.debug:
-                print(f"Error registrando diccionario: {str(e)}")
+            if self.log_file:
+                with open(self.log_file, 'a', encoding='utf-8') as f:
+                    f.write(formatted_message + '\n')
 
 def dep(data, exit=True):
     print(data)
@@ -125,25 +82,25 @@ def validate_paths(data_yaml: str, output_path: str, logger: Logger) -> dict:
     """
     try:
         logger.print("Validando rutas...")
-
-        data_yaml = Path(data_yaml)
-        output_path = Path(output_path)
         
         # Validar extensión del archivo
-        if data_yaml.suffix != '.yaml':
+        if not data_yaml.endswith('.yaml'):
             return {"success": False, "error": "El archivo debe tener extensión .yaml"}
         
         # Validar existencia del archivo
-        if not data_yaml.exists():
+        if not os.path.exists(data_yaml):
             return {"success": False, "error": "El archivo data.yaml no existe"}
         
         # Validar que sea un archivo y no un directorio
-        if not data_yaml.is_file():
+        if not os.path.isfile(data_yaml):
             return {"success": False, "error": "La ruta data.yaml no es un archivo"}
         
+        # Convertir output_path a ruta absoluta
+        output_path = os.path.abspath(output_path)
+        
         # Crear directorio de salida si no existe
-        output_path.mkdir(parents=True, exist_ok=True)
-            
+        os.makedirs(output_path, exist_ok=True)
+        
         # Validar permisos de escritura
         if not os.access(output_path, os.W_OK):
             return {"success": False, "error": "No hay permisos de escritura en la ruta de salida"}
@@ -167,10 +124,6 @@ def load_data_config(yaml_path: str, logger: Logger) -> dict:
     """
     try:
         logger.print("Cargando configuración...")
-
-        yaml_path = Path(yaml_path)  # Convertir a Path
-        if not yaml_path.exists():
-            return {"success": False, "error": "Archivo de configuración no encontrado"}
         
         with open(yaml_path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
@@ -238,24 +191,7 @@ def validate_training_params(epochs: int, batch_size: int, img_size: int,
                 "success": False, 
                 "error": f"Tamaño de modelo inválido. Debe ser uno de: {', '.join(VALID_MODEL_SIZES)}"
                 }
-        # Validar device
-        if device not in ['cpu', '0', '1', '2', '3']:
-            return {
-                "success": False,
-                "error": "Device debe ser 'cpu' o un número de GPU válido (0-3)"
-            }
         
-        if device != 'cpu':
-            if not torch.cuda.is_available():
-                return {
-                    "success": False,
-                    "error": "CUDA no está disponible en el sistema"
-                }
-            if int(device) >= torch.cuda.device_count():
-                return {
-                    "success": False,
-                    "error": f"GPU {device} no existe. Dispositivos disponibles: 0-{torch.cuda.device_count()-1}"
-                }
         if device == 'cuda' and not torch.cuda.is_available():
             return {
                 "success": False,
@@ -288,18 +224,15 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         dict: Diccionario con resultados del entrenamiento y estadísticas
     """
     try:
-        start_time = datetime.now()
         logger.print("\n=== Iniciando entrenamiento ===")
         
         # Validar parámetros
         param_validation = validate_training_params(epochs, batch_size, img_size, model_size, device, logger)
         if not param_validation["success"]:
-            logger.log_dict(param_validation, "Error en validación de parámetros")
             return param_validation
         
         # Si hay pesos, verificar que existan
         if weights and not os.path.exists(weights):
-            logger.print(f"No se encontró el archivo de pesos: {weights}")
             return {
                 "success": False,
                 "error": f"No se encontró el archivo de pesos: {weights}"
@@ -319,16 +252,10 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         cfg = f'yolov5{model_size}.yaml'
 
         # cfg_path = attempt_download(f'models/{cfg}')
-        models_dir = Path('models')
-        if not models_dir.exists():
-            logger.print("Directorio 'models' no encontrado")
-            return {
-                "success": False,
-                "error": "Directorio 'models' no encontrado"
-            }
-
-        # Obtener la ruta absoluta directamente en un solo paso
-        cfg_path = str((models_dir / cfg).absolute())   
+        cfg_path = f'models/{cfg}'
+        
+        # obtener ruta absoluta del archivo de configuración del modelo usando Path
+        cfg_path = str(Path(cfg_path).absolute())
 
         # Configurar argumentos de entrenamiento
         args = {
@@ -348,9 +275,6 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
             'freeze': [0],
             # 'verbose': False # No imprimir logs
         }
-
-        # Registrar configuración
-        logger.log_dict(args, "Configuración de entrenamiento")
         
         # Depurar antes de la serialización
         logger.print("\nVerificando serialización de parámetros...")
@@ -358,9 +282,8 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
 
         try:
             # Intentar serializar para logging
-            logger.print("Configuración de entrenamiento (serealizando):")
+            logger.print("Configuración de entrenamiento:")
             logger.print(json.dumps(args, indent=2))
-
         except TypeError as e:
             logger.print(f"Error al serializar argumentos: {e}")
             return {
@@ -376,13 +299,10 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         best_model_path = model_dir / 'best.pt'
         last_model_path = model_dir / 'last.pt'
         
-        end_time = datetime.now()
-        training_time = (end_time - start_time).total_seconds()
-
         # Procesar resultados
         training_stats = {
             "final_epoch": epochs,  # Número total de épocas ejecutadas
-            "training_time": training_time,  # Se podría implementar midiendo el tiempo de ejecución
+            "training_time": None,  # Se podría implementar midiendo el tiempo de ejecución
             "model_paths": {
                 "best": str(best_model_path),
                 "last": str(last_model_path)
@@ -405,10 +325,6 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
                 "error": f"Error al evaluar modelo: {e}"
             }
 
-        # Registrar resultados
-        logger.log_dict(training_stats, "Estadísticas de entrenamiento")
-        logger.log_dict(evaluate["metrics"], "Métricas de evaluación")
-
         logger.print("Entrenamiento completado exitosamente")
         return {
             "success": True,
@@ -417,9 +333,10 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         }
         
     except Exception as e:
-        error_info = {"success": False, "error": f"Error durante el entrenamiento: {str(e)}"}
-        logger.log_dict(error_info, "Error en entrenamiento")
-        return error_info
+        return {
+            "success": False,
+            "error": f"Error durante el entrenamiento: {str(e)}"
+        }
 
 def evaluate_model(weights_path, data_yaml, img_size=640, device='cpu'):
     """
@@ -483,20 +400,6 @@ def main(data_yaml: str, output_path: str, name_experiment: str, epochs: int,
     logger = Logger(debug, log_file)
     try:
         logger.print("\n=== Iniciando script de entrenamiento ===")
-        # Registrar parámetros de entrada
-        input_params = {
-            "data_yaml": str(data_yaml),
-            "output_path": str(output_path),
-            "name_experiment": name_experiment,
-            "epochs": epochs,
-            "batch_size": batch_size,
-            "img_size": img_size,
-            "device": device,
-            "model_size": model_size,
-            "weights": str(weights) if weights else None
-        }
-        logger.log_dict(input_params, "Parámetros de entrada")
-
         # Validar rutas
         validation = validate_paths(data_yaml, output_path, logger)
         if not validation["success"]:
@@ -534,16 +437,14 @@ def main(data_yaml: str, output_path: str, name_experiment: str, epochs: int,
             "device": device,
             "model_size": model_size
         }
-
-        # Registrar resultado final
-        logger.log_dict(train_result, "Resultado final del entrenamiento")
-
+        
         return train_result
         
     except Exception as e:
-        error_result = {"success": False, "error": f"Error general: {str(e)}"}
-        logger.log_dict(error_result, "Error general")
-        return error_result
+        return {
+            "success": False,
+            "error": f"Error general: {str(e)}"
+        }
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Entrena un modelo YOLOv5')

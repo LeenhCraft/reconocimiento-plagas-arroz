@@ -120,7 +120,7 @@ class GenerarDatosController extends Controller
         $scriptPath = __DIR__ . "/../ScriptIA/GenerarDatos.py";
         $arg = [
             '--images' => $rutas["carpeta_img_entrenamiento"],
-            '--output' => $rutas["ruta_datos_entrenamiento"] . "/" . date("YmdHis"), // carpeta de salida cuando se generan los datos
+            '--output' => $rutas["ruta_datos_entrenamiento"] . "/" . $marcaTiempo, // carpeta de salida cuando se generan los datos
             // '--output' => $rutas["ruta_datos_entrenamiento"] . "/Clases", // carpeta de salida cuando se hacen pruebas
             '--classes' => $jsoncreado["ruta_completa"],
             '--val-split' => 0.2

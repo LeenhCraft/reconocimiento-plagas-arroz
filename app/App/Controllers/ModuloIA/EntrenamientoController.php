@@ -20,6 +20,13 @@ class EntrenamientoController extends Controller
         $model->setTable("re_datos_generados");
         $model->setId("identrenamiento");
         $arrDataTrain = $model->where("ent_default", "1")->first();
+        if (empty($arrDataTrain)) {
+            $arrDataTrain = [
+                "stats" => [],
+                "yaml" => '{"yaml_path":""}',
+                "summary" => []
+            ];
+        }
         $model->emptyQuery();
         $model->setTable("re_configuracion");
         $model->setId("idconfig");
@@ -71,12 +78,12 @@ class EntrenamientoController extends Controller
             // '--base-path' => "C:/laragon/www/plagas-arroz/public_html",
             '--output' => $rutas["ruta_modelo"],
             '--name' => $nombre,
-            '--epochs' => 10,
+            '--epochs' => 100,
             '--batch-size' => 32,
             '--img-size' => 416,
             '--device' => '0',  // vacío para auto-detección
             '--model-size' => 'n', // n, s, m, l, x
-            '--log-file' => "log/train.log",
+            // '--log-file' => "log/train.log",
             // pesos pre entrenados
             '--weights' => 'models/yolov5n.pt',
         ];
@@ -148,7 +155,7 @@ class EntrenamientoController extends Controller
                     "det_ruta" => $result["config"]["output_path"],
                     "det_nombre" => $nombre,
                     "det_default" => "1",
-                    "det_tiempo" => $tiempoFin - $tiempoInicio,
+                    "det_tiempo" => gmdate("H:i:s", $tiempoFin - $tiempoInicio),
                     "det_inicio" => DateTime::createFromFormat('Ymd_His', $marcaTiempo)->format('Y-m-d H:i:s'),
                     "det_fin" => DateTime::createFromFormat('Ymd_His', $marcaTiempo2)->format('Y-m-d H:i:s'),
                     "det_salida" => json_encode($result),
@@ -168,7 +175,9 @@ class EntrenamientoController extends Controller
                 'output' => $output,
                 'return_code' => $returnCode
             ];
+            return $this->respondWithError($response, $error);
         }
+        return $this->respondWithError($response, "Error al ejecutar el entrenamiento, revisar código");
     }
 
     private function obtenerDataTrain()
@@ -189,5 +198,21 @@ class EntrenamientoController extends Controller
     {
         $data = $this->sanitize($request->getParsedBody());
         return $this->respondWithJson($response, $data);
+    }
+
+    public function calcular($request, $response)
+    {
+        $inicio = "2024-11-13 09:24:42";
+        $inicio = strtotime($inicio);
+
+        $fin = "2024-11-13 09:32:36";
+        $fin = strtotime($fin);
+
+        dep([
+            'inicio' => $inicio,
+            'fin' => $fin,
+            'diferencia' => $fin - $inicio,
+            'diferencia formateada' => gmdate("H:i:s", $fin - $inicio),
+        ], 1);
     }
 }

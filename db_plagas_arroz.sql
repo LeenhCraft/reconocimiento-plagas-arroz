@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 13-11-2024 a las 06:14:01
+-- Tiempo de generación: 13-11-2024 a las 18:48:53
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -432,7 +432,7 @@ ALTER TABLE `re_modelo`
 -- AUTO_INCREMENT de la tabla `sis_centinela`
 --
 ALTER TABLE `sis_centinela`
-  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9125;
+  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9273;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_menus`

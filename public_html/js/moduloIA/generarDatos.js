@@ -216,7 +216,11 @@ function createRecordHTML(record) {
           <div class="d-flex justify-content-between align-items-center mb-2">
               <span class="text-dark fw-bold fs-7">${formatDate(
                 record.fecha_registro
-              )}</span>
+              )}
+                <span class="text-primary ms-2">
+                  ${record.code}
+                </span>
+              </span>
               <span class="bg-white text-success py-1 px-2 fw-semibold fs-6">
                   <i class="fas fa-check-circle me-1"></i>
                   ${data.success_rate}%
