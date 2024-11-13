@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 04-11-2024 a las 23:50:07
+-- Tiempo de generación: 13-11-2024 a las 01:20:31
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -39,7 +39,7 @@ CREATE TABLE `re_configuracion` (
 --
 
 INSERT INTO `re_configuracion` (`idconfig`, `nombre`, `valor`, `date`) VALUES
-(2, 'valor', '{\"carpeta_img_entrenamiento\":\"img\\/entrenamiento\",\"ruta_datos_entrenamiento\":\"entrenamiento\",\"nombre_datos_entrenamiento\":\"entrenamiento\",\"ruta_datos_generados\":\"data\\/\",\"nombre_modelo\": \"modelo-yolo-v5/\",\"ruta_modelo\": \"modelo\"}', '2024-10-29 09:20:45');
+(2, 'valor', '{\"carpeta_img_entrenamiento\":\"img\\/entrenamiento\",\"ruta_datos_entrenamiento\":\"datos_entrenamiento\",\"nombre_datos_entrenamiento\":\"entrenamiento\",\"ruta_datos_generados\":\"json\\/\",\"nombre_modelo\":\"modelo-yolo-v5\",\"ruta_modelo\":\"modelo_entrenado\"}', '2024-10-29 09:20:45');
 
 -- --------------------------------------------------------
 
@@ -57,12 +57,25 @@ CREATE TABLE `re_datos_generados` (
   `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `re_datos_generados`
+-- Estructura de tabla para la tabla `re_detalle_modelo`
 --
 
-INSERT INTO `re_datos_generados` (`identrenamiento`, `code`, `stats`, `yaml`, `summary`, `ent_default`, `fecha_registro`) VALUES
-(1, '20241104145927', '{\"train\":{\"total\":323,\"by_class\":{\"Falso medidor\":67,\"Gusano enrollador de la hoja\":48,\"Caracol manzana\":74,\"Sogata del arroz\":69,\"Gusano cogollero\":65}},\"val\":{\"total\":84,\"by_class\":{\"Falso medidor\":17,\"Caracol manzana\":19,\"Gusano cogollero\":17,\"Gusano enrollador de la hoja\":13,\"Sogata del arroz\":18}},\"total_images\":407,\"images_by_class\":{\"Caracol manzana\":93,\"Falso medidor\":84,\"Gusano cogollero\":82,\"Gusano enrollador de la hoja\":61,\"Sogata del arroz\":87}}', '{\"success\":true,\"yaml_path\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\\\\data.yaml\",\"config\":{\"path\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\",\"train\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\\\\train\\\\images\",\"val\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\entrenamiento\\\\Clases\\\\val\\\\images\",\"nc\":5,\"names\":[\"Caracol manzana\",\"Falso medidor\",\"Gusano cogollero\",\"Gusano enrollador de la hoja\",\"Sogata del arroz\"]}}', '{\"total_processed\":407,\"train_total\":323,\"val_total\":84,\"errors_count\":0,\"processing_success_rate\":100}', 1, '2024-11-04 14:59:27');
+CREATE TABLE `re_detalle_modelo` (
+  `id_detalle_modelo` int NOT NULL,
+  `idmodelo` int NOT NULL,
+  `identrenamiento` int NOT NULL,
+  `det_ruta` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `det_nombre` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `det_default` tinyint(1) NOT NULL DEFAULT '0',
+  `det_tiempo` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `det_inicio` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `det_fin` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `det_salida` text COLLATE utf8mb4_unicode_ci,
+  `det_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -85,11 +98,33 @@ CREATE TABLE `re_enfermedades` (
 --
 
 INSERT INTO `re_enfermedades` (`idenfermedad`, `nombre`, `slug`, `imagen_url`, `descripcion`, `desactivado`, `fecha_registro`) VALUES
-(6, 'Gusano enrollador de la hoja', 'gusano-enrollador-de-la-hoja', '/img/plagas/gusano-enrollador-de-la-hoja.png', '<p>Gusano enrollador de la hoja - Cnaphalocrocis medinalis (Lepidoptera: Crambinae)</p>', 0, '2024-11-02 15:05:37'),
-(7, 'Caracol manzana', 'caracol-manzana', '/img/plagas/caracol-manzana.png', '', 0, '2024-11-02 15:06:33'),
-(8, 'Falso medidor', 'falso-medidor', '/img/plagas/falso-medidor.jpg', '', 0, '2024-11-02 15:06:40'),
-(9, 'Gusano cogollero', 'gusano-cogollero', '/img/plagas/gusano-cogollero.png', '', 0, '2024-11-02 15:06:45'),
-(10, 'Sogata del arroz', 'sogata-del-arroz', '/img/plagas/sogata-del-arroz.jpg', '', 0, '2024-11-02 15:06:53');
+(6, 'Gusano enrollador de la hoja', 'gusano-enrollador-de-la-hoja', '/img/plagas/gusano-enrollador-de-la-hoja.jpg', '<p>Gusano enrollador de la hoja - Cnaphalocrocis medinalis (Lepidoptera: Crambinae)</p>', 0, '2024-11-02 15:05:37'),
+(7, 'Caracol manzana', 'caracol-manzana', '/img/plagas/caracol-manzana.jpeg', '', 0, '2024-11-02 15:06:33'),
+(8, 'Falso medidor', 'falso-medidor', '/img/plagas/falso-medidor.jpeg', '', 0, '2024-11-02 15:06:40'),
+(9, 'Gusano cogollero', 'gusano-cogollero', '/img/plagas/gusano-cogollero.jpg', '', 0, '2024-11-02 15:06:45'),
+(10, 'Sogata del arroz', 'sogata-del-arroz', '/img/plagas/sogata-del-arroz.png', '', 0, '2024-11-02 15:06:53');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `re_modelo`
+--
+
+CREATE TABLE `re_modelo` (
+  `idmodelo` int NOT NULL,
+  `mo_nombre` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mo_clasificador` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mo_descriptor` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mo_default` tinyint(1) NOT NULL DEFAULT '0',
+  `mo_fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `re_modelo`
+--
+
+INSERT INTO `re_modelo` (`idmodelo`, `mo_nombre`, `mo_clasificador`, `mo_descriptor`, `mo_default`, `mo_fecha`) VALUES
+(1, 'Yolo v5', 'YOLO', 'TOLO', 1, '2024-11-12 10:44:54');
 
 -- --------------------------------------------------------
 
@@ -300,10 +335,22 @@ ALTER TABLE `re_datos_generados`
   ADD PRIMARY KEY (`identrenamiento`);
 
 --
+-- Indices de la tabla `re_detalle_modelo`
+--
+ALTER TABLE `re_detalle_modelo`
+  ADD PRIMARY KEY (`id_detalle_modelo`);
+
+--
 -- Indices de la tabla `re_enfermedades`
 --
 ALTER TABLE `re_enfermedades`
   ADD PRIMARY KEY (`idenfermedad`);
+
+--
+-- Indices de la tabla `re_modelo`
+--
+ALTER TABLE `re_modelo`
+  ADD PRIMARY KEY (`idmodelo`);
 
 --
 -- Indices de la tabla `sis_centinela`
@@ -361,7 +408,13 @@ ALTER TABLE `re_configuracion`
 -- AUTO_INCREMENT de la tabla `re_datos_generados`
 --
 ALTER TABLE `re_datos_generados`
-  MODIFY `identrenamiento` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `identrenamiento` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `re_detalle_modelo`
+--
+ALTER TABLE `re_detalle_modelo`
+  MODIFY `id_detalle_modelo` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `re_enfermedades`
@@ -370,10 +423,16 @@ ALTER TABLE `re_enfermedades`
   MODIFY `idenfermedad` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT de la tabla `re_modelo`
+--
+ALTER TABLE `re_modelo`
+  MODIFY `idmodelo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `sis_centinela`
 --
 ALTER TABLE `sis_centinela`
-  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8417;
+  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8834;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_menus`

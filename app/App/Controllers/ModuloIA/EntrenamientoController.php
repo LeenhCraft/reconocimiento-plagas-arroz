@@ -49,7 +49,7 @@ class EntrenamientoController extends Controller
         $arrDataTrain = $this->obtenerDataTrain();
 
         $rutas = json_decode($textdata['valor'], true);
-        $pythonPath = "C:/Users/LEENH/anaconda3/envs/plagazArroz/python.exe";
+        $pythonPath = "C:/Users/LEENH/anaconda3/envs/plagas/python.exe";
         $scriptPath = __DIR__ . "/../ScriptIA/EntrenarYOLO.py";
         // $scriptPath = __DIR__ . "/../ScriptIA/Demo.py";
 
@@ -106,6 +106,7 @@ class EntrenamientoController extends Controller
         exec($command, $output, $returnCode);
 
         $marcaTiempo2 = date("Ymd_His");
+
         $tiempoFin = time();
 
         // Procesar la salida
@@ -115,7 +116,8 @@ class EntrenamientoController extends Controller
             //     'marca 1' => DateTime::createFromFormat('Ymd_His', $marcaTiempo)->format('Y-m-d H:i:s'),
             //     'marca 2' => DateTime::createFromFormat('Ymd_His', $marcaTiempo2)->format('Y-m-d H:i:s'),
             //     'command' => $command,
-            //     'output' => json_encode($result),
+            //     'output' => $output,
+            //     'result' => $result,
             //     'return_code' => $returnCode,
             // ], 1);
             // Procesar $result
@@ -138,6 +140,7 @@ class EntrenamientoController extends Controller
                     "det_tiempo" => $tiempoFin - $tiempoInicio,
                     "det_inicio" => DateTime::createFromFormat('Ymd_His', $marcaTiempo)->format('Y-m-d H:i:s'),
                     "det_fin" => DateTime::createFromFormat('Ymd_His', $marcaTiempo2)->format('Y-m-d H:i:s'),
+                    "det_salida" => json_encode($result),
                 ]);
                 if (!empty($respuesta)) {
                     $model->query("UPDATE re_detalle_modelo SET det_default = 0 WHERE id_detalle_modelo != ?", [$respuesta["id_detalle_modelo"]]);

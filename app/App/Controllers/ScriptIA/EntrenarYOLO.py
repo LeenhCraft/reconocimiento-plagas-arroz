@@ -307,27 +307,73 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
                 "best": str(best_model_path),
                 "last": str(last_model_path)
             },
-            # "final_metrics": {
-            #     "mAP50": results[2],          # mAP@0.5
-            #     "mAP50_95": results[3],       # mAP@0.5:0.95
-            #     "precision": results[0],       # Precisión
-            #     "recall": results[1],          # Recall
-            #     "box_loss": results[4],        # Pérdida de boxes
-            #     "obj_loss": results[5],        # Pérdida de objectness
-            #     "cls_loss": results[6]         # Pérdida de clasificación
-            # }
         }
-        
+
+        try:
+            # Evaluar el mejor modelo
+            evaluate = evaluate_model(
+                weights_path = best_model_path,
+                data_yaml = data_config,
+                img_size = img_size,
+                device='0'  # usa GPU si está disponible
+            )
+            evaluate['metrics'] = {k: v.tolist() if hasattr(v, 'tolist') else list(v) for k,v in evaluate['metrics'].items()}
+        except TypeError as e:
+            logger.print(f"Error al evaluar modelo: {e}")
+            return {
+                "success": False,
+                "error": f"Error al evaluar modelo: {e}"
+            }
+
         logger.print("Entrenamiento completado exitosamente")
         return {
             "success": True,
-            "stats": training_stats
+            "stats": training_stats,
+            "evaluation": evaluate["metrics"]
         }
         
     except Exception as e:
         return {
             "success": False,
             "error": f"Error durante el entrenamiento: {str(e)}"
+        }
+
+def evaluate_model(weights_path, data_yaml, img_size=640, device='cpu'):
+    """
+    Evalúa un modelo YOLOv5 entrenado
+    """
+    from yolov5 import val
+    
+    try:
+        results = val.run(
+            weights=weights_path,
+            data=data_yaml,
+            batch_size=32,
+            imgsz=img_size,
+            device=device,
+            save_txt=False,
+            save_hybrid=False,
+            save_conf=True,
+            verbose=True
+        )
+        
+        # Extraer métricas
+        metrics = {
+            'precision': results[0],
+            'recall': results[1],
+            'mAP50': results[2],
+            'mAP50_95': results[3]
+        }
+
+        return {
+            "success": True,
+            "metrics": metrics
+        }
+        
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
         }
 
 def main(data_yaml: str, output_path: str, name_experiment: str, epochs: int, 

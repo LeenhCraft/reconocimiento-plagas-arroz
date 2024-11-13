@@ -4,6 +4,15 @@ CUDA INSTALL (https://www.youtube.com/watch?v=HQ7Ges1dhww)
     Tener instalado CUDA Toolkit
     Tener instalada la versión de PyTorch con soporte CUDA
 
+instalar pytorch:
+    conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+
+Luego instaalr los requerimientos para usar YOLOv5
+    pip install -r requirements.txt
+
+Finalmente instalar el modelo YOLOv5
+    pip install yolov5
+
 Se necesita instaalr el software anaconda, un manejador de paquetes ara python, para poder ejecutar el programa.
 
 con conda tendra que crear un entorno virtual para las bibliotecas para que no haya problemas de compatibilidad.
