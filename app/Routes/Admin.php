@@ -106,6 +106,7 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
     $group->group('/entrenar', function (RouteCollectorProxy $group) {
         $group->get('', EntrenamientoController::class . ':index');
         $group->post('', EntrenamientoController::class . ':entrenarModelo');
+        $group->post('/configurar', EntrenamientoController::class . ':store');
     });
 
     $group->group('/prediccion', function (RouteCollectorProxy $group) {

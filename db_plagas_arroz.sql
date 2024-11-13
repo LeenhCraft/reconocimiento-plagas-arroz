@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 13-11-2024 a las 01:20:31
+-- Tiempo de generación: 13-11-2024 a las 06:14:01
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -39,7 +39,7 @@ CREATE TABLE `re_configuracion` (
 --
 
 INSERT INTO `re_configuracion` (`idconfig`, `nombre`, `valor`, `date`) VALUES
-(2, 'valor', '{\"carpeta_img_entrenamiento\":\"img\\/entrenamiento\",\"ruta_datos_entrenamiento\":\"datos_entrenamiento\",\"nombre_datos_entrenamiento\":\"entrenamiento\",\"ruta_datos_generados\":\"json\\/\",\"nombre_modelo\":\"modelo-yolo-v5\",\"ruta_modelo\":\"modelo_entrenado\"}', '2024-10-29 09:20:45');
+(2, 'valor', '{\"carpeta_img_entrenamiento\":\"img\\/entrenamiento\",\"ruta_datos_entrenamiento\":\"datos_entrenamiento\",\"nombre_datos_entrenamiento\":\"entrenamiento\",\"ruta_datos_generados\":\"json\\/\",\"nombre_modelo\":\"modelo-yolo-v5\",\"ruta_modelo\":\"modelo_entrenado\",\"epochs\":15,\"batch_size\":16,\"img_size\":640,\"model_size\":\"n\",\"path_weights\":\"C:\\\\laragon\\\\www\\\\plagas-arroz\\\\public_html\\\\models\\\\yolov5n.pt\",\"weights\":true}', '2024-10-29 09:20:45');
 
 -- --------------------------------------------------------
 
@@ -432,7 +432,7 @@ ALTER TABLE `re_modelo`
 -- AUTO_INCREMENT de la tabla `sis_centinela`
 --
 ALTER TABLE `sis_centinela`
-  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8834;
+  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9125;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_menus`

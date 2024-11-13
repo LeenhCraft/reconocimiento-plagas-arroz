@@ -56,3 +56,41 @@ $("#entrenarModelo").click(function (e) {
     }
   });
 });
+$("#config_train").submit(function (e) {
+  e.preventDefault();
+  // enviar formulario mediante ajax al endpoint /admin/entrenameinto/config
+  let data = new FormData(this);
+  // Mostrar loading
+  divLoading.css("display", "flex");
+  $.ajax({
+    url: base_url + "admin/entrenar/configurar",
+    type: "POST",
+    data: data,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      // Mostrar mensaje de éxito
+      Swal.fire({
+        icon: response.status ? "success" : "error",
+        title: response.status ? "¡Éxito!" : "Error",
+        text: response.message || "Configuración guardada correctamente",
+      });
+    },
+    error: function (error) {
+      // Mostrar mensaje de error
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text:
+          error.responseJSON?.message ||
+          "Ocurrió un error al guardar la configuración",
+      });
+      console.error("Error:", error);
+      new Audio(base_url + "notificacion.mp3").play();
+    },
+    complete: function () {
+      // Ocultar loading
+      divLoading.css("display", "none");
+    },
+  });
+});

@@ -16,13 +16,24 @@ class EntrenamientoController extends Controller
     public function index($request, $response)
     {
         $_SESSION["UUID"] = uniqid("csrf_token_", true);
+        $model = new TableModel;
+        $model->setTable("re_datos_generados");
+        $model->setId("identrenamiento");
+        $arrDataTrain = $model->where("ent_default", "1")->first();
+        $model->emptyQuery();
+        $model->setTable("re_configuracion");
+        $model->setId("idconfig");
+        $arrConfig = $model->first();
+
         return $this->render($response, 'ModuloIA.Entrenamiento.Entrenamiento', [
             'titulo_web' => 'Entrenamiento',
             "url" => $request->getUri()->getPath(),
             "js" => [
                 "/js/moduloIA/entrenamiento.js"
             ],
-            "uuid" => $_SESSION["UUID"]
+            "uuid" => $_SESSION["UUID"],
+            "datatrain" => $arrDataTrain,
+            "config" => $arrConfig,
         ]);
     }
 
@@ -172,5 +183,11 @@ class EntrenamientoController extends Controller
         $arrDataTrain["yaml"] = json_decode($arrDataTrain["yaml"], true);
         $arrDataTrain["summary"] = json_decode($arrDataTrain["summary"], true);
         return $arrDataTrain;
+    }
+
+    public function store($request, $response)
+    {
+        $data = $this->sanitize($request->getParsedBody());
+        return $this->respondWithJson($response, $data);
     }
 }
