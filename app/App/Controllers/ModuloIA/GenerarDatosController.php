@@ -153,7 +153,9 @@ class GenerarDatosController extends Controller
         $returnVar = 0;
         // exec($command . " 2>&1", $output, $returnVar);
         exec($command, $output, $returnVar);
-
+        // dep([
+        //     "output" => $output,
+        // ], 1);
         // decodificar el json
         $salida = json_decode(implode("\n", $output), true);
 

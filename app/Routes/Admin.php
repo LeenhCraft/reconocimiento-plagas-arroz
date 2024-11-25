@@ -105,14 +105,17 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
 
     $group->group('/entrenar', function (RouteCollectorProxy $group) {
         $group->get('', EntrenamientoController::class . ':index');
+        $group->get('/list', EntrenamientoController::class . ':list');
         $group->get('/calcular', EntrenamientoController::class . ':calcular');
+
         $group->post('', EntrenamientoController::class . ':entrenarModelo');
         $group->post('/configurar', EntrenamientoController::class . ':store');
+        $group->post('/activar', EntrenamientoController::class . ':activarModelo');
     });
 
     $group->group('/prediccion', function (RouteCollectorProxy $group) {
         $group->get('', IAController::class . ':index');
-        $group->post('', IAController::class . ':store');
+        $group->post('', IAController::class . ':detect');
     });
 
     // Rutas relacionadas a las plagas y enfermedades del arroz

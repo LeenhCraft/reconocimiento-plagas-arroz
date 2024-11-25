@@ -40,6 +40,7 @@ class Logger:
         
         # Registrar inicio de sesión
         self.log_to_file(f"=== Inicio de sesión: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
+
     def print(self, message: str):
         """
         Imprime mensaje en consola si debug está activado y siempre lo guarda en el log.
@@ -92,6 +93,32 @@ def dep(data, exit=True):
     print(data)
     if exit:
         sys.exit()
+
+def get_time_diff(start_time, end_time):
+    """
+    Calcula la diferencia de tiempo entre dos momentos.
+    
+    Args:
+        start_time (datetime): Tiempo inicial
+        end_time (datetime): Tiempo final
+        
+    Returns:
+        dict: Diccionario con los tiempos y diferencias
+    """
+    time_diff = end_time - start_time
+    seconds_diff = time_diff.total_seconds()
+    
+    hours = int(seconds_diff // 3600)
+    minutes = int((seconds_diff % 3600) // 60)
+    seconds = int(seconds_diff % 60)
+    
+    return {
+        'inicio': start_time.timestamp(),
+        'fin': end_time.timestamp(),
+        'diferencia_segundos': seconds_diff,
+        'tiempo_formateado': f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    }
+
 
 def debug_json_serialization(data):
     """
@@ -353,7 +380,7 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         logger.log_dict(args, "Configuración de entrenamiento")
         
         # Depurar antes de la serialización
-        logger.print("\nVerificando serialización de parámetros...")
+        logger.print("Verificando serialización de parámetros...")
         debug_json_serialization(args)
 
         try:
@@ -377,12 +404,12 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         last_model_path = model_dir / 'last.pt'
         
         end_time = datetime.now()
-        training_time = (end_time - start_time).total_seconds()
+        training_time = get_time_diff(start_time, end_time)
 
         # Procesar resultados
         training_stats = {
             "final_epoch": epochs,  # Número total de épocas ejecutadas
-            "training_time": training_time,  # Se podría implementar midiendo el tiempo de ejecución
+            "training_time": training_time["tiempo_formateado"],  # Se podría implementar midiendo el tiempo de ejecución
             "model_paths": {
                 "best": str(best_model_path),
                 "last": str(last_model_path)
@@ -392,6 +419,7 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         try:
             # Evaluar el mejor modelo
             evaluate = evaluate_model(
+                name_experiment = name_experiment,
                 weights_path = best_model_path,
                 data_yaml = data_config,
                 img_size = img_size,
@@ -421,7 +449,7 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         logger.log_dict(error_info, "Error en entrenamiento")
         return error_info
 
-def evaluate_model(weights_path, data_yaml, img_size=640, device='cpu'):
+def evaluate_model(name_experiment:str, weights_path, data_yaml, img_size=640, device='cpu'):
     """
     Evalúa un modelo YOLOv5 entrenado
     """
@@ -431,6 +459,7 @@ def evaluate_model(weights_path, data_yaml, img_size=640, device='cpu'):
         results = val.run(
             weights=weights_path,
             data=data_yaml,
+            name=name_experiment,
             batch_size=32,
             imgsz=img_size,
             device=device,
@@ -482,7 +511,7 @@ def main(data_yaml: str, output_path: str, name_experiment: str, epochs: int,
     """
     logger = Logger(debug, log_file)
     try:
-        logger.print("\n=== Iniciando script de entrenamiento ===")
+        logger.print("=== Iniciando script de entrenamiento ===")
         # Registrar parámetros de entrada
         input_params = {
             "data_yaml": str(data_yaml),
@@ -500,11 +529,13 @@ def main(data_yaml: str, output_path: str, name_experiment: str, epochs: int,
         # Validar rutas
         validation = validate_paths(data_yaml, output_path, logger)
         if not validation["success"]:
+            logger.log_dict(validation, "Error en validación de rutas")
             return validation
         
         # Cargar configuración
         config_result = load_data_config(data_yaml, logger)
         if not config_result["success"]:
+            logger.log_dict(config_result, "Error al cargar configuración")
             return config_result
         
         # Entrenar modelo
@@ -522,6 +553,7 @@ def main(data_yaml: str, output_path: str, name_experiment: str, epochs: int,
         )
         
         if not train_result["success"]:
+            logger.log_dict(train_result, "Error en entrenamiento")
             return train_result
         
         # Agregar información adicional al resultado
@@ -575,7 +607,8 @@ if __name__ == "__main__":
 
     # obtener la ruta absoluta de args.output usando Path
     args.output = Path(args.output).absolute()
-    args.log_file = Path(args.log_file).absolute()
+    if args.log_file:
+        args.log_file = Path(args.log_file).absolute()
 
     result = main(
         data_yaml=args.data,

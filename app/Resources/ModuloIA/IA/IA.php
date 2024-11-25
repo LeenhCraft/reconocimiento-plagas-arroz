@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="btns d-flex justify-content-between my-4">
-                        <button type="submit" class="btn btn-primary">Identificar</button>
+                        <button type="button" class="btn btn-primary">Identificar</button>
                     </div>
                 </form>
             </div>

@@ -13,6 +13,8 @@ Luego instaalr los requerimientos para usar YOLOv5
 Finalmente instalar el modelo YOLOv5
     pip install yolov5
 
+pip install python-magic
+
 Se necesita instaalr el software anaconda, un manejador de paquetes ara python, para poder ejecutar el programa.
 
 con conda tendra que crear un entorno virtual para las bibliotecas para que no haya problemas de compatibilidad.

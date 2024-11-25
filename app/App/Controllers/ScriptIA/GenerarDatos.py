@@ -133,10 +133,11 @@ def create_yaml(output_path: str, class_names: List[str], logger: Logger) -> Dic
     """
     try:
         logger.print("Generando data.yaml...")
-        output_path = Path(output_path).resolve()  # Convertir a ruta absoluta
+        output_path = Path(output_path)  # Convertir a ruta absoluta
         
         # Usar rutas absolutas para train y val
-        dataset_path = Path(BASE_PATH) / "entrenamiento" / "Clases"
+        # dataset_path = Path(BASE_PATH) / "datos_entrenamiento"
+        dataset_path = output_path
         train_path = (output_path / 'train' / 'images').resolve()
         val_path = (output_path / 'val' / 'images').resolve()
 
@@ -148,14 +149,14 @@ def create_yaml(output_path: str, class_names: List[str], logger: Logger) -> Dic
             'names': class_names
         }
         
-        yaml_path = output_path / 'data.yaml'
+        yaml_path = dataset_path / 'data.yaml'
         with yaml_path.open('w', encoding='utf-8') as f:
             yaml.safe_dump(yaml_data, f, sort_keys=False, allow_unicode=True)
             
         logger.print(f"Archivo data.yaml creado en: {str(yaml_path)}")
         return {
             "success": True,
-            "yaml_path": str(yaml_path),
+            "yaml_path": str(yaml_path.absolute()),
             "config": yaml_data
         }
     except Exception as e:
