@@ -116,7 +116,7 @@ class GenerarDatosController extends Controller
         // END - Obtener las clases de plagas y guardarlas en un json
 
         // Ejecutar script de python para generar los datos
-        $pythonPath = "C:/Users/LEENH/anaconda3/envs/plagas/python.exe";
+        $pythonPath = $_ENV["PYTHON_PATH"];
         $scriptPath = __DIR__ . "/../ScriptIA/GenerarDatos.py";
         $arg = [
             '--images' => $rutas["carpeta_img_entrenamiento"],
@@ -133,7 +133,7 @@ class GenerarDatosController extends Controller
         }
 
         $command = sprintf(
-            '%s %s %s',
+            '"%s" %s %s',
             escapeshellcmd($pythonPath),
             escapeshellarg($scriptPath),
             implode(' ', array_map(
@@ -154,6 +154,7 @@ class GenerarDatosController extends Controller
         // exec($command . " 2>&1", $output, $returnVar);
         exec($command, $output, $returnVar);
         // dep([
+        //     "command" => $command,
         //     "output" => $output,
         // ], 1);
         // decodificar el json

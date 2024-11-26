@@ -82,7 +82,7 @@ class EntrenamientoController extends Controller
 
         $arrDataTrain = $this->obtenerDataTrain();
         $rutas = json_decode($textdata['valor'], true);
-        $pythonPath = "C:/Users/LEENH/anaconda3/envs/plagas/python.exe";
+        $pythonPath = $_ENV["PYTHON_PATH"];
         $scriptPath = __DIR__ . "/../ScriptIA/EntrenarYOLO.py";
         // $scriptPath = __DIR__ . "/../ScriptIA/Demo.py";
 
