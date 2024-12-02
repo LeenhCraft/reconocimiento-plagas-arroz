@@ -153,7 +153,7 @@ class DetectYoloClass
 
             // Agregar información adicional
             $result['output_dir'] = $outputDir;
-            $result['command_executed'] = $command;
+            // $result['command_executed'] = $command;
 
             return $result;
         } catch (Exception $e) {

@@ -41,6 +41,8 @@
                             <h4 class="m-0 ms-3 mb-3 result-name-2 fw-bold"></h4>
                             <h5 class="m-0 p-0 mb-3">Link:</h5>
                             <a href="#" class="result-link w-100 h4 ms-3 fw-bolf" target="_blank"><i class='bx bx-link-alt me-2'></i>Más información</a>
+                            <h5 class="m-0 p-0 mb-3">Tiempo:</h5>
+                            <h5 class="m-0 ms-3 mb-3 result-time fw-bold"></h5>
                         </div>
                     </div>
                 </div>

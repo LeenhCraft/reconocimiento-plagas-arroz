@@ -92,3 +92,39 @@ function urls_amigables($url)
     $url = preg_replace($find, $repl, $url);
     return $url;
 }
+
+/**
+ * Calcula y formatea el tiempo de ejecución con precisión
+ */
+function getExecutionTime($start, $end = null) {
+    if ($end === null) {
+        $end = time(); // Usamos `time()` en lugar de `microtime()`
+    }
+
+    // Diferencia en segundos
+    $diff = $end - $start;
+
+    // Cálculo de componentes de tiempo
+    $hours = (int)floor($diff / 3600); // Horas
+    $minutes = (int)floor(($diff % 3600) / 60); // Minutos
+    $seconds = (int)($diff % 60); // Segundos
+
+    // Formateo detallado
+    $detailed = '';
+    if ($hours > 0) $detailed .= $hours . 'h ';
+    if ($minutes > 0) $detailed .= $minutes . 'm ';
+    if ($seconds > 0) $detailed .= $seconds . 's ';
+    $detailed = trim($detailed);
+
+    // Retorno de los resultados
+    return [
+        'reloj' => sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds),
+        'detallado' => $detailed,
+        'segundos' => $diff,  // Tiempo en segundos
+        'unidad_optima' => match(true) {
+            $diff >= 3600 => $hours . ' horas',
+            $diff >= 60 => $minutes . ' minutos',
+            default => $seconds . ' segundos'
+        }
+    ];
+}

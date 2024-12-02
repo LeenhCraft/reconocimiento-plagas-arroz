@@ -302,6 +302,7 @@ class EntrenamientoController extends Controller
             ->select(
                 "re_detalle_modelo.id_detalle_modelo as id",
                 "det_nombre as nombre",
+                "det_tiempo as tiempo",
                 "det_precision as preci",
                 "det_fecha as fecha",
                 "re_modelo.mo_nombre as modelo",

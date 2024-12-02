@@ -15,3 +15,5 @@ public_html/modelo_entrenado
 public_html/runs
 codigo_sueltos.txt
 public_html/log
+*.pyc
+__pycache__

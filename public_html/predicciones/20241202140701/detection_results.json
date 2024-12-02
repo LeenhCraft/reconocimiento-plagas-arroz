@@ -1,0 +1,28 @@
+{
+    "success": true,
+    "image_path": "C:\\Users\\LEENH\\AppData\\Local\\Temp/detection-ai_upload_674e0555451162.05552492/enrrollador-de-la-hoja-6724099308500.jpg",
+    "detections": [
+        {
+            "class": "Gusano enrollador de la hoja",
+            "confidence": 0.8570408225059509,
+            "bbox": {
+                "x1": 2,
+                "y1": 0,
+                "x2": 498,
+                "y2": 374
+            }
+        }
+    ],
+    "timestamp": "2024-12-02T14:07:16.222021",
+    "model_info": {
+        "weights": "C:\\laragon\\www\\plagas-arroz\\public_html\\modelo_entrenado\\modelo-yolo-v5_20241202_080705\\weights\\best.pt",
+        "conf_threshold": 0.15
+    },
+    "summary": {
+        "total_detections": 1,
+        "classes_detected": {
+            "Gusano enrollador de la hoja": 1
+        },
+        "average_confidence": 0.8570408225059509
+    }
+}

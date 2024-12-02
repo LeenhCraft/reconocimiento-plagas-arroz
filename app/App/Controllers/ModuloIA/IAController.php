@@ -36,6 +36,9 @@ class IAController extends Controller
     public function detect(Request $request, Response $response): Response
     {
         try {
+            // inicio de ejecución
+            $start = time();
+
             // Validar que se recibió un archivo
             $uploadedFiles = $request->getUploadedFiles();
 
@@ -61,7 +64,7 @@ class IAController extends Controller
             $modelPaths = $this->getModelPathsFromDB();
 
             // Crear directorio temporal para la imagen
-            $tmpDir = sys_get_temp_dir() . '/' . uniqid('upload_', true);
+            $tmpDir = sys_get_temp_dir() . '/' . uniqid(urls_amigables($_ENV["APP_NAME"]) . '_upload_', true);
             mkdir($tmpDir, 0777, true);
 
             // Guardar imagen temporal
@@ -89,15 +92,24 @@ class IAController extends Controller
                 $result = $this->enrichDetectionResults($result);
             }
 
+            // Fin de ejecución
+            $tiempo = getExecutionTime($start);
+            $result['execution_time'] = $tiempo["detallado"];
+
             // Preparar respuesta
             $responseData = [
                 'success' => true,
                 'data' => $result
             ];
 
+            // registramos el historial de la detección
+            $result["idmodelo"] = $modelPaths["idmodelo"];
+            $this->registerHistory($result);
+
             // Escribir respuesta
-            $response->getBody()->write(json_encode($responseData));
-            return $response->withHeader('Content-Type', 'application/json');
+            return $this->respondWithJson($response, $responseData);
+            // $response->getBody()->write(json_encode($responseData));
+            // return $response->withHeader('Content-Type', 'application/json');
         } catch (Exception $e) {
             // Preparar respuesta de error
             $errorResponse = [
@@ -141,9 +153,12 @@ class IAController extends Controller
         return [
             'python_path' => $_ENV["PYTHON_PATH"],
             'script_path' => __DIR__ . '/../ScriptIA/DetectYolo.py',
+            // 'script_path' => __DIR__ . '/../ScriptIA/detect_yolo_v2.py',
             'output_base_dir' => $rutas["ruta_detecciones"] ?? "",
             'weights_path' => $paths["stats"]["model_paths"]["best"],
             'data_yaml_path' => $paths["config"]["data_yaml"],
+            'name' => $modeloEntrenado['det_nombre'],
+            'idmodelo' => $modeloEntrenado['id_detalle_modelo'],
         ];
     }
 
@@ -152,10 +167,12 @@ class IAController extends Controller
      */
     private function enrichDetectionResults(array $result): array
     {
+        unset($result['model_info']);
         // Aquí deberías implementar la lógica para agregar información
         // adicional de la base de datos para cada clase detectada
         if (isset($result['detections'])) {
             foreach ($result['detections'] as &$detection) {
+
                 $className = $detection['class'];
                 // Obtener información adicional de la base de datos
                 $detection['additional_info'] = $this->getClassInfoFromDB($className);
@@ -167,15 +184,52 @@ class IAController extends Controller
 
     /**
      * Obtiene información adicional de una clase desde la base de datos
+     * @param string $className Nombre de la clase
+     * @return array Información adicional de la clase
      */
     private function getClassInfoFromDB(string $className): array
     {
         // Implementar la lógica para obtener información adicional de la base de datos
+        $model = new TableModel;
+        $model->setTable("re_enfermedades");
+        $model->setId("idenfermedad");
+        $data = $model
+            ->where("nombre", "LIKE", $className)
+            ->first();
+
         // Este es solo un ejemplo
         return [
-            'description' => 'Descripción de la clase ' . $className,
-            'category' => 'Categoría ejemplo',
+            // 'description' => 'Descripción de la clase ' . $className,
+            'description' => $data['descripcion'] ?? '',
+            'url' => base_url() . "admin/plagas/" . $data['slug'] ?? '',
+            'image' => base_url() . $data['imagen_url'] ?? '',
             // ... más información ...
         ];
+    }
+
+    /**
+     * Registra el historial de detecciones
+     * @param array $result Resultado de la detección
+     * @return array Información del historial registrado
+     */
+    private function registerHistory(array $result)
+    {
+        // Implementar la lógica para registrar el historial de detecciones
+        $model = new TableModel;
+        $model->setTable("re_historial_identificacion");
+        $model->setId("idhistorial");
+
+        $data = [
+            "id_detalle_modelo" => $result["idmodelo"],
+            "idusuario" => $_SESSION["app_id"],
+            "his_img" => "",
+            "his_tiempo" => $result["execution_time"],
+            "his_inicio" => "no disponible",
+            "his_fin" => "no disponible",
+            "his_index" => "0",
+            "his_prediccion" => json_encode($result),
+        ];
+
+        return $model->create($data);
     }
 }

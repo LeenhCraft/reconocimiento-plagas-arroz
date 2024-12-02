@@ -21,10 +21,9 @@ def dep(data, exit=True):
     if exit:
         sys.exit()
 
-def setup_logging(output_dir):
+def setup_logging(output_dir, name):
     """Configura el sistema de logging"""
-    log_file = os.path.join(output_dir, 'detection.log')
-    # Configurar solo el archivo de log, no la salida estándar
+    log_file = os.path.join(output_dir, f'{name}_detection.log')
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -33,23 +32,6 @@ def setup_logging(output_dir):
         ]
     )
     return logging.getLogger(__name__)
-
-def is_valid_image(file_path):
-    """
-    Verifica si un archivo es una imagen válida usando imghdr y PIL
-    """
-    try:
-        # Verificar el tipo de imagen usando imghdr
-        img_type = imghdr.what(file_path)
-        if img_type not in ['jpeg', 'png', 'gif']:
-            return False, f"Tipo de imagen no soportado: {img_type}"
-
-        # Intentar abrir la imagen con PIL
-        with Image.open(file_path) as img:
-            img.verify()
-        return True, "Imagen válida"
-    except Exception as e:
-        return False, str(e)
 
 def validate_image(image_path, max_size_mb=10):
     """
@@ -99,14 +81,29 @@ def load_model(weights_path, data_yaml_path):
         error_msg = f"Error cargando el modelo: {str(e)}\n{traceback.format_exc()}"
         return None, None, error_msg
 
-def run_detection(image_path, output_dir, weights_path, data_yaml_path, conf_thres=0.25):
+
+def run_detection(image_path, output_dir, weights_path, data_yaml_path, conf_thres=0.25, name='det'):
     """
     Ejecuta la detección de objetos
+    
+    Args:
+        image_path: Ruta a la imagen de entrada
+        output_dir: Directorio base de salida
+        weights_path: Ruta a los pesos del modelo
+        data_yaml_path: Ruta al archivo de configuración
+        conf_thres: Umbral de confianza para detecciones
+        name: Nombre del experimento
     """
     try:
+        # Crear directorio específico para este experimento
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        experiment_dir = os.path.join(output_dir, f"{name}_{timestamp}")
+        os.makedirs(experiment_dir, exist_ok=True)
+        
         # Configurar logging
-        logger = setup_logging(output_dir)
-        logger.info(f"Iniciando detección en {image_path}")
+        logger = setup_logging(experiment_dir, name)
+        logger.info(f"Iniciando experimento de detección: {name}")
+        logger.info(f"Procesando imagen: {image_path}")
         
         # Validar imagen
         is_valid, validation_msg = validate_image(image_path)
@@ -145,14 +142,17 @@ def run_detection(image_path, output_dir, weights_path, data_yaml_path, conf_thr
             detections.append(detection)
         
         # Guardar imagen con detecciones
-        results.save(output_dir)
+        results.save(experiment_dir)
         
         # Preparar resultado
         output = {
             "success": True,
+            "experiment_name": name,
             "image_path": image_path,
+            "output_dir": experiment_dir,
             "detections": detections,
             "timestamp": datetime.now().isoformat(),
+            "time_detected": results.imgs[0].shape[:2],
             "model_info": {
                 "weights": weights_path,
                 "conf_threshold": conf_thres
@@ -174,11 +174,11 @@ def run_detection(image_path, output_dir, weights_path, data_yaml_path, conf_thr
                 output["summary"]["classes_detected"][cls] = output["summary"]["classes_detected"].get(cls, 0) + 1
         
         # Guardar resultados en JSON
-        results_file = os.path.join(output_dir, 'detection_results.json')
+        results_file = os.path.join(experiment_dir, f'{name}_detection_results.json')
         with open(results_file, 'w') as f:
             json.dump(output, f, indent=4)
         
-        logger.info("Detección completada exitosamente")
+        logger.info(f"Detección completada exitosamente para experimento {name}")
         return output
         
     except Exception as e:
@@ -195,10 +195,12 @@ def main():
     parser.add_argument('--conf', type=float, default=0.25, help='Umbral de confianza')
     parser.add_argument('--format', choices=['json', 'both'], default='json',
                        help='Formato de salida: solo JSON o JSON con logs')
+    parser.add_argument('--name', type=str, default='det',
+                       help='Nombre del experimento de detección (default: det)')
     
     args = parser.parse_args()
     
-    # Crear directorio de salida si no existe
+    # Crear directorio de salida base si no existe
     os.makedirs(args.output, exist_ok=True)
     
     try:
@@ -208,23 +210,25 @@ def main():
             args.output,
             args.weights,
             args.data,
-            args.conf
+            args.conf,
+            args.name
         )
         
         if args.format == 'both':
             # Leer el archivo de log
-            log_file = os.path.join(args.output, 'detection.log')
+            log_file = os.path.join(args.output, f'{args.name}_detection.log')
             with open(log_file, 'r') as f:
                 logs = f.readlines()
-                        
+            
             # Crear estructura de salida combinada
             output = {
+                'experiment_name': args.name,
                 'logs': logs,
                 'result': result
             }
         else:
             output = result
-
+        
         # Imprimir resultado en formato JSON
         print(json.dumps(output, indent=4))
         
@@ -235,7 +239,6 @@ def main():
         }
         print(json.dumps(error_output, indent=4), file=sys.stderr)
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()

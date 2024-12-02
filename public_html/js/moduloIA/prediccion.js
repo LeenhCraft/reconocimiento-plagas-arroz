@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const resultName = document.querySelector(".result-name");
   const resultName2 = document.querySelector(".result-name-2");
   const resultLink = document.querySelector(".result-link");
+  const resultTime = document.querySelector(".result-time");
   const submitBtn = document.querySelector('button[type="button"]');
 
   // Función para previsualizar la imagen
@@ -153,20 +154,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Mostrar loader
-    Swal.fire({
-      title: "Procesando imagen",
-      html: `
-                <div class="d-flex flex-column align-items-center">
-                    <div class="mb-3">Por favor espere mientras procesamos su imagen...</div>
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                    </div>
-                </div>
-            `,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      showConfirmButton: false,
-    });
+    divLoading.css("display", "flex");
+    // Swal.fire({
+    //   title: "Procesando imagen",
+    //   html: `
+    //             <div class="d-flex flex-column align-items-center">
+    //                 <div class="mb-3">Por favor espere mientras procesamos su imagen...</div>
+    //                 <div class="spinner-border text-primary" role="status">
+    //                     <span class="visually-hidden">Cargando...</span>
+    //                 </div>
+    //             </div>
+    //         `,
+    //   allowOutsideClick: false,
+    //   allowEscapeKey: false,
+    //   showConfirmButton: false,
+    // });
 
     try {
       const formData = new FormData();
@@ -205,9 +207,9 @@ document.addEventListener("DOMContentLoaded", function () {
       cardResult.scrollIntoView({ behavior: "smooth", block: "start" });
 
       // Actualizar imagen resultado (asumiendo que la ruta viene en la respuesta)
-      if (data.data.output_dir) {
-        resultImg.src = `${data.data.output_dir}/image0.jpg`;
-      }
+      // if (data.data.output_dir) {
+      //   resultImg.src = `${data.data.output_dir}/image0.jpg`;
+      // }
 
       // Actualizar información
       if (data.data.detections && data.data.detections.length > 0) {
@@ -216,6 +218,8 @@ document.addEventListener("DOMContentLoaded", function () {
         resultName2.textContent =
           detection.additional_info?.common_name || "No disponible";
         resultLink.href = detection.additional_info?.url || "#";
+        resultImg.src = detection.additional_info?.image || "#";
+        resultTime.textContent = data.data.execution_time || "No disponible";
 
         // Mostrar mensaje de éxito
         Swal.fire({
@@ -241,6 +245,10 @@ document.addEventListener("DOMContentLoaded", function () {
         text: error.message || "Error al procesar la imagen",
         confirmButtonColor: "#3085d6",
       });
+    } finally {
+      divLoading.css("display", "none");
+      // reproducir sonido
+      new Audio(base_url + "notificacion.mp3").play();
     }
   });
 });
@@ -342,6 +350,11 @@ style.textContent = `
     .dz-message .note {
         font-size: 0.875rem;
         color: #6c757d;
+    }
+    .result-img{
+      max-height: 300px;
+      object-fit: contain;
+      border: 1px solid #d4d4d4;
     }
 `;
 document.head.appendChild(style);

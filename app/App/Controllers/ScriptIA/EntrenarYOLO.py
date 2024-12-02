@@ -332,6 +332,9 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
                 "error": f"No se encontró el archivo de pesos: {weights}"
             }
         
+        # Importar funcion para clcular workers
+        from calculate_workers import calculate_optimal_workers, calculate_patience
+        
         # Importar YOLOv5
         from yolov5 import train
         
@@ -369,9 +372,9 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
             'name': name_experiment,
             'device': device,
             'save_period': -1,  # Guardar último y mejor modelo
-            'exist_ok': True,
-            'patience': 100,    # Early stopping patience
-            'workers': 8,
+            'exist_ok': False,
+            'patience': calculate_patience(epochs), # Early stopping patience
+            'workers': calculate_optimal_workers(),
             'freeze': [0],
             # 'verbose': False # No imprimir logs
         }
@@ -386,7 +389,7 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         try:
             # Intentar serializar para logging
             logger.print("Configuración de entrenamiento (serealizando):")
-            logger.print(json.dumps(args, indent=2))
+            # logger.print(json.dumps(args, indent=2))
 
         except TypeError as e:
             logger.print(f"Error al serializar argumentos: {e}")
@@ -397,6 +400,9 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
       
         # Entrenar modelo
         results = train.run(**args)
+        
+        logger.print("Resultados del entrenamiento:")
+        logger.log_dict(results, "resultados")
 
         # Obtener rutas de los modelos
         model_dir = Path(output_path) / name_experiment / 'weights'
@@ -423,7 +429,8 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
                 weights_path = best_model_path,
                 data_yaml = data_config,
                 img_size = img_size,
-                device='0'  # usa GPU si está disponible
+                device='0',  # usa GPU si está disponible
+                batch_size = batch_size
             )
             evaluate['metrics'] = {k: v.tolist() if hasattr(v, 'tolist') else list(v) for k,v in evaluate['metrics'].items()}
         except TypeError as e:
@@ -449,7 +456,7 @@ def train_model(data_config: dict, output_path: str, name_experiment:str, epochs
         logger.log_dict(error_info, "Error en entrenamiento")
         return error_info
 
-def evaluate_model(name_experiment:str, weights_path, data_yaml, img_size=640, device='cpu'):
+def evaluate_model(name_experiment:str, weights_path, data_yaml, img_size=640, device='cpu', batch_size = 16):
     """
     Evalúa un modelo YOLOv5 entrenado
     """
@@ -460,7 +467,7 @@ def evaluate_model(name_experiment:str, weights_path, data_yaml, img_size=640, d
             weights=weights_path,
             data=data_yaml,
             name=name_experiment,
-            batch_size=32,
+            batch_size=batch_size,
             imgsz=img_size,
             device=device,
             save_txt=False,

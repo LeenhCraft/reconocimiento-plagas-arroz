@@ -49,6 +49,8 @@ $("#entrenarModelo").click(function (e) {
           divLoading.css("display", "none");
           // reproducir sonido de notificación
           new Audio(base_url + "notificacion.mp3").play();
+          // actualizamos la tabla
+          tb.api().ajax.reload();
         },
       });
     }
@@ -125,6 +127,7 @@ $(document).ready(function () {
         render: function (data, type, row, meta) {
           return `<p class="m-0 p-0 fs-6 text-dark fw-normal">${row.modelo}</p>
               <p class="m-0 p-0 fs-5 text-primary fw-bold">${row.nombre}</p>
+              <p class="m-0 p-0 fs-7 text-secondary fw-normal">${row.tiempo}</p>
           `;
         },
       },
@@ -166,31 +169,27 @@ $(document).ready(function () {
         data: null,
         className: "px-2",
         render: function (data, type, row, meta) {
-          let btn = ``;
+          let classBtn = "btn-secondary";
+          const btnDel = `<button type="button" class="btn btn-sm btn-outline-danger rounded-3 py-0 px-2" onclick="eliminarModelo('${row.id}')">
+                <i class='bx bx-trash-alt bx-xs'></i>
+            </button>`;
           if (row.def == 1) {
-            btn = `
-            <button 
-              type="button" 
-              class="btn btn-sm btn-primary rounded-3 py-0 px-1"
-              onclick="activarModelo(${row.id})">
-                <i class='bx bx-play bx-sm'></i>
-            </button>`;
+            classBtn = "btn-primary";
           } else {
-            btn = `
-            <button 
-              type="button" 
-              class="btn btn-sm btn-outline-primary rounded-3 py-0 px-1"
-              onclick="activarModelo(${row.id})">
-                <i class='bx bx-play bx-sm'></i>
-            </button>`;
+            classBtn = "btn-outline-primary";
           }
+
+          let btn = `<button 
+            type="button" 
+            class="btn btn-sm ${classBtn} rounded-3 py-0 px-1"
+            onclick="activarModelo(${row.id})">
+              <i class='bx bx-play bx-sm'></i>
+          </button>`;
 
           return `
           <div class="d-flex gap-2">
             ${btn}
-            <button type="button" class="btn btn-sm btn-outline-danger rounded-3 py-0 px-2">
-                <i class='bx bx-trash-alt bx-xs'></i>
-            </button>
+            ${btnDel}            
           </div>
           `;
         },
@@ -203,6 +202,7 @@ $(document).ready(function () {
     searching: false,
     lengthMenu: [7, 10, 25, 50, 75, 100],
     scrollX: true,
+    order: [],
   });
 });
 
@@ -236,7 +236,10 @@ function activarModelo(id) {
     complete: function () {
       // Ocultar loading
       divLoading.css("display", "none");
+      // reproducir sonido de notificación
       new Audio(base_url + "notificacion.mp3").play();
+      // actualizamos la tabla
+      tb.api().ajax.reload();
     },
   });
 }
