@@ -199,9 +199,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // Actualizar información
       if (data.data.detections && data.data.detections.length > 0) {
         const detection = data.data.detections[0];
-        resultName.textContent = detection.class || "No disponible";
-        resultName2.textContent =
-          detection.additional_info?.common_name || "No disponible";
+        resultName.textContent = detection.additional_info?.nombre_cientifico || "No disponible";
+        resultName2.textContent = detection.class || "No disponible";
         resultLink.href = detection.additional_info?.url || "#";
         resultImg.src = detection.additional_info?.image || "#";
         resultTime.textContent = data.data.execution_time || "No disponible";

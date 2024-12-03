@@ -202,7 +202,7 @@ class IAController extends Controller
             'description' => $data['descripcion'] ?? '',
             'url' => base_url() . "admin/plagas/" . $data['slug'] ?? '',
             'image' => base_url() . $data['imagen_url'] ?? '',
-            // ... más información ...
+            'nombre_cientifico' => $data['nombre_cientifico'] ?? '',
         ];
     }
 
@@ -290,11 +290,9 @@ class IAController extends Controller
                     text-align: center;
                     padding: 20px;
                     background: #f8f9fa;
-                    margin-bottom: 30px;
                 }
                 .logo {
                     max-width: 50px;
-                    margin-bottom: 15px;
                 }
                 .container {
                     padding: 20px;
@@ -355,7 +353,7 @@ class IAController extends Controller
                     border-bottom: 1px solid #ddd;
                 }
                 .detection-image {
-                    max-width: 100%;
+                    max-width: 200px;
                     height: auto;
                     margin: 20px 0;
                 }';
