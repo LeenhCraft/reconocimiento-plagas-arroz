@@ -115,6 +115,7 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
 
     $group->group('/prediccion', function (RouteCollectorProxy $group) {
         $group->get('', IAController::class . ':index');
+        $group->get('/pdf/{id}', IAController::class . ':generarPdf');
         $group->post('', IAController::class . ':detect');
     });
 

@@ -31,10 +31,10 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-md-auto">
+                        <div class="col-12 col-md-auto mb-2 mb-md-3">
                             <img class="result-img" src="" alt="resultado" width="450">
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 mb-2 mb-md-3">
                             <h5 class="m-0 p-0 mb-3">Nombre Cientifico:</h5>
                             <h4 class="m-0 ms-3 mb-3 result-name fw-bold"></h4>
                             <h5 class="m-0 p-0 mb-3">Nombre Comun:</h5>
@@ -44,8 +44,34 @@
                             <h5 class="m-0 p-0 mb-3">Tiempo:</h5>
                             <h5 class="m-0 ms-3 mb-3 result-time fw-bold"></h5>
                         </div>
+                        <div class="col-12">
+                            <a href="#" class="btn btn-warning fw-bold generate-pdf">
+                                <i class='bx bxs-cloud-download bx-sm me-1'></i>
+                                Descargar Reporte
+                            </a>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mdlVerPDF" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Descargar Informe de Detección</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <embed id="pdf" src="" type="application/pdf" width="100%" height="600px">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary fw-normal" data-bs-dismiss="modal">
+                    <i class="fa-regular
+                        fa-circle-xmark me-2"></i>
+                    <span>Cerrar</span>
+                </button>
             </div>
         </div>
     </div>

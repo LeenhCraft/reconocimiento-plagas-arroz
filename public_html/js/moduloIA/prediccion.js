@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const resultLink = document.querySelector(".result-link");
   const resultTime = document.querySelector(".result-time");
   const submitBtn = document.querySelector('button[type="button"]');
+  const downloadBtn = document.querySelector(".generate-pdf");
+  const modalPDF = document.getElementById("mdlVerPDF");
+  const embedPDF = document.getElementById("pdf");
+  const modalTitle = document.querySelector("#mdlVerPDF .modal-title");
 
   // Función para previsualizar la imagen
   function previewImage(file) {
@@ -155,20 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Mostrar loader
     divLoading.css("display", "flex");
-    // Swal.fire({
-    //   title: "Procesando imagen",
-    //   html: `
-    //             <div class="d-flex flex-column align-items-center">
-    //                 <div class="mb-3">Por favor espere mientras procesamos su imagen...</div>
-    //                 <div class="spinner-border text-primary" role="status">
-    //                     <span class="visually-hidden">Cargando...</span>
-    //                 </div>
-    //             </div>
-    //         `,
-    //   allowOutsideClick: false,
-    //   allowEscapeKey: false,
-    //   showConfirmButton: false,
-    // });
 
     try {
       const formData = new FormData();
@@ -206,11 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // Scroll suave hacia los resultados
       cardResult.scrollIntoView({ behavior: "smooth", block: "start" });
 
-      // Actualizar imagen resultado (asumiendo que la ruta viene en la respuesta)
-      // if (data.data.output_dir) {
-      //   resultImg.src = `${data.data.output_dir}/image0.jpg`;
-      // }
-
       // Actualizar información
       if (data.data.detections && data.data.detections.length > 0) {
         const detection = data.data.detections[0];
@@ -220,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
         resultLink.href = detection.additional_info?.url || "#";
         resultImg.src = detection.additional_info?.image || "#";
         resultTime.textContent = data.data.execution_time || "No disponible";
+        downloadBtn.setAttribute("onclick", `downloadPDF(${data.data.cod})`);
 
         // Mostrar mensaje de éxito
         Swal.fire({
@@ -256,105 +242,145 @@ document.addEventListener("DOMContentLoaded", function () {
 // Estilos actualizados
 const style = document.createElement("style");
 style.textContent = `
-    .container-img {
-        position: relative;
-        height: 300px;
-        border: 2px dashed #d4d4d4;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        overflow: hidden;
-        background-color: #f8f9fa;
-        transition: all 0.3s ease;
-        padding: 10px;
-    }
+  .container-img {
+      position: relative;
+      height: 300px;
+      border: 2px dashed #d4d4d4;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      background-color: #f8f9fa;
+      transition: all 0.3s ease;
+      padding: 10px;
+  }
 
-    .container-img input[type="file"] {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-        z-index: -1;
-    }
+  .container-img input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: -1;
+  }
 
-    .preview-container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        padding: 10px;
-    }
+  .preview-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 10px;
+  }
 
-    .preview-img {
-        display: block;
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        border-radius: 4px;
-        transition: transform 0.3s ease;
-    }
-
-    .dz-message {
-        padding: 2rem;
-        text-align: center;
-        color: #6c757d;
-    }
-
-    .container-img:hover {
-        border-color: #696cff;
-    }
-
-    .remove-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 10;
-        width: 32px;
-        height: 32px;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: all 0.3s ease;
-        background-color: rgba(220, 53, 69, 0.9);
-    }
-
-    .remove-btn:hover {
-        background-color: #dc3545;
-        transform: scale(1.1);
-    }
-
-    .remove-btn i {
-        font-size: 20px;
-    }
-
-    .dragover {
-        border-color: #696cff;
-        background-color: rgba(105, 108, 255, 0.05);
-    }
-
-    /* Estilo para el mensaje de arrastrar */
-    .dz-message {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .dz-message .note {
-        font-size: 0.875rem;
-        color: #6c757d;
-    }
-    .result-img{
-      max-height: 300px;
+  .preview-img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
-      border: 1px solid #d4d4d4;
-    }
+      border-radius: 4px;
+      transition: transform 0.3s ease;
+  }
+
+  .dz-message {
+      padding: 2rem;
+      text-align: center;
+      color: #6c757d;
+  }
+
+  .container-img:hover {
+      border-color: #696cff;
+  }
+
+  .remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      background-color: rgba(220, 53, 69, 0.9);
+  }
+
+  .remove-btn:hover {
+      background-color: #dc3545;
+      transform: scale(1.1);
+  }
+
+  .remove-btn i {
+      font-size: 20px;
+  }
+
+  .dragover {
+      border-color: #696cff;
+      background-color: rgba(105, 108, 255, 0.05);
+  }
+
+  /* Estilo para el mensaje de arrastrar */
+  .dz-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+  }
+
+  .dz-message .note {
+      font-size: 0.875rem;
+      color: #6c757d;
+  }
+  .result-img{
+    max-height: 300px;
+    object-fit: contain;
+    border: 1px solid #d4d4d4;
+  }
 `;
 document.head.appendChild(style);
+
+function downloadPDF(data) {
+  divLoading.css("display", "flex");
+
+  // Generar URL segura con base_url
+  // const pdfURL = base_url + "admin/prediccion/" + data;
+  const pdfURL = `${base_url}admin/prediccion/pdf/${data}`;
+
+  // Obtener el modal y el embed del PDF
+  const modal = new bootstrap.Modal(document.getElementById("mdlVerPDF"));
+  const pdfEmbed = document.getElementById("pdf");
+
+  // Actualizar el título del modal con el título de la práctica
+  const modalTitle = document.querySelector("#mdlVerPDF .modal-title");
+  modalTitle.textContent = `Reporte`;
+
+  // Establecer la URL del PDF en el embed
+  pdfEmbed.src = pdfURL;
+
+  // Manejar errores de carga del PDF
+  pdfEmbed.onerror = function () {
+    Toast.fire({
+      icon: "info",
+      title: "Error al cargar el PDF. Por favor, intente nuevamente.",
+    });
+    modal.hide();
+  };
+
+  // Mostrar el modal
+  modal.show();
+
+  // Limpiar el embed cuando se cierre el modal
+  document
+    .getElementById("mdlVerPDF")
+    .addEventListener("hidden.bs.modal", function () {
+      pdfEmbed.src = "";
+    });
+
+  divLoading.css("display", "none");
+}

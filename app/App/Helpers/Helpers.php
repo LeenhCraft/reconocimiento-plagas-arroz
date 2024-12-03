@@ -96,7 +96,8 @@ function urls_amigables($url)
 /**
  * Calcula y formatea el tiempo de ejecución con precisión
  */
-function getExecutionTime($start, $end = null) {
+function getExecutionTime($start, $end = null)
+{
     if ($end === null) {
         $end = time(); // Usamos `time()` en lugar de `microtime()`
     }
@@ -121,10 +122,25 @@ function getExecutionTime($start, $end = null) {
         'reloj' => sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds),
         'detallado' => $detailed,
         'segundos' => $diff,  // Tiempo en segundos
-        'unidad_optima' => match(true) {
+        'unidad_optima' => match (true) {
             $diff >= 3600 => $hours . ' horas',
             $diff >= 60 => $minutes . ' minutos',
             default => $seconds . ' segundos'
         }
     ];
+}
+
+function addCeros(int $int, $cantidadCeros = 2)
+{
+    $intString = (string)$int; // Convertir el número a cadena
+    $length = strlen($intString); // Obtener la longitud de la cadena
+
+    if ($length < $cantidadCeros) {
+        // Agregar ceros a la izquierda si la longitud es menor que la cantidad especificada
+        $ceros = str_repeat('0', $cantidadCeros - $length);
+        return $ceros . $intString;
+    } else {
+        // Devolver el número como cadena si la longitud es mayor o igual
+        return $intString;
+    }
 }

@@ -96,20 +96,19 @@ class IAController extends Controller
             $tiempo = getExecutionTime($start);
             $result['execution_time'] = $tiempo["detallado"];
 
+            // registramos el historial de la detección
+            $result["idmodelo"] = $modelPaths["idmodelo"];
+            $historial = $this->registerHistory($result);
+            $result["cod"] = $historial["idhistorial"];
+
             // Preparar respuesta
             $responseData = [
                 'success' => true,
                 'data' => $result
             ];
 
-            // registramos el historial de la detección
-            $result["idmodelo"] = $modelPaths["idmodelo"];
-            $this->registerHistory($result);
-
             // Escribir respuesta
             return $this->respondWithJson($response, $responseData);
-            // $response->getBody()->write(json_encode($responseData));
-            // return $response->withHeader('Content-Type', 'application/json');
         } catch (Exception $e) {
             // Preparar respuesta de error
             $errorResponse = [
@@ -231,5 +230,202 @@ class IAController extends Controller
         ];
 
         return $model->create($data);
+    }
+
+    public function generarPdf($request, $response, $args)
+    {
+        try {
+            $data = $this->sanitize($args);
+
+            if (!$data["id"]) {
+                throw new Exception("ID de ocurrencia no proporcionado");
+            }
+
+            $model = new TableModel;
+            $model->setTable('re_historial_identificacion');
+            $model->setId("idhistorial");
+
+            $arrData = $model
+                ->select(
+                    "re_historial_identificacion.*",
+                    "re_modelo.mo_nombre as modelo"
+                )
+                ->join("re_detalle_modelo", "re_detalle_modelo.id_detalle_modelo", "re_historial_identificacion.id_detalle_modelo")
+                ->join("re_modelo", "re_modelo.idmodelo", "re_detalle_modelo.idmodelo")
+                ->where("re_historial_identificacion.idhistorial", $data["id"])
+                ->first();
+
+            if (empty($arrData)) {
+                throw new Exception("Informe de Detección no encontrada");
+            }
+
+            $prediccion = json_decode($arrData["his_prediccion"], true);
+            $detecciones = $prediccion["detections"][0];
+            // dep($arrData);
+            // dep($prediccion, 1);
+
+            // Generar el nombre del archivo
+            $fileName = urls_amigables("Informe de Detección - " . addCeros($arrData["idhistorial"], 6));
+
+            // Crear instancia de mPDF
+            $mpdf = new \Mpdf\Mpdf([
+                'margin_left' => 15,
+                'margin_right' => 15,
+                'margin_top' => 15,
+                'margin_bottom' => 15,
+                'format' => 'A4',
+            ]);
+
+            // Establecer el título del documento PDF
+            $mpdf->SetTitle($fileName);
+
+            // Estilos CSS
+            $css = '
+                body {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                }
+                .header {
+                    text-align: center;
+                    padding: 20px;
+                    background: #f8f9fa;
+                    margin-bottom: 30px;
+                }
+                .logo {
+                    max-width: 50px;
+                    margin-bottom: 15px;
+                }
+                .container {
+                    padding: 20px;
+                }
+                .detection-info {
+                    margin-bottom: 30px;
+                }
+                .detection-box {
+                    background: #fff;
+                    border: 1px solid #ddd;
+                    padding: 15px;
+                    margin: 10px 0;
+                    border-radius: 5px;
+                }
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 15px;
+                    margin: 20px 0;
+                }
+                .stat-item {
+                    background: #f8f9fa;
+                    padding: 10px;
+                    border-radius: 5px;
+                }
+                .confidence-bar {
+                    background: #e9ecef;
+                    height: 20px;
+                    border-radius: 10px;
+                    overflow: hidden;
+                }
+                .confidence-level {
+                    background: #4CAF50;
+                    height: 20px;
+                }
+                .timestamp {
+                    color: #666;
+                    font-size: 0.9em;
+                }
+                .execution-time {
+                    color: #007bff;
+                    font-weight: bold;
+                }
+                .additional-info {
+                    margin-top: 30px;
+                    padding: 20px;
+                    background: #f8f9fa;
+                    border-left: 4px solid #007bff;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }
+                th, td {
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                }
+                .detection-image {
+                    max-width: 100%;
+                    height: auto;
+                    margin: 20px 0;
+                }';
+
+            $mpdf->WriteHTML($css, \Mpdf\HTMLParserMode::HEADER_CSS);
+
+            // Contenido HTML actualizado
+            $html = '
+                <body>
+                    <div class="header">
+                        <img src="/img/logo-dark.png" class="logo" alt="Logo">
+                        <h1>Reporte de Detección de Plagas</h1>
+                    </div>
+
+                    <div class="container">
+                        <div class="detection-info">
+                            <div class="detection-box">
+                                <h2>Detección Principal</h2>
+                                <p>Clase: <strong>' . $detecciones["class"] . '</strong></p>
+                                
+                                <div class="confidence-bar">
+                                    <div class="confidence-level" style="width: ' . ($detecciones["confidence"] * 100) . '%"></div>
+                                </div>
+                                <p>Confianza: ' . ($detecciones["confidence"] * 100) . '%</p>
+                                
+                                <img src="' . $detecciones["additional_info"]["image"] . '" class="detection-image" alt="Imagen detectada">
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <p>Total de detecciones: ' . $prediccion["summary"]["total_detections"] . ' </p>
+                                </div>
+                                <div class="stat-item">
+                                    <p>Tiempo de ejecución: <span class="execution-time">' . $prediccion["execution_time"] . '</span></p>
+                                </div>
+                            </div>
+
+                            <table>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>ID Modelo</th>
+                                    <th>Directorio de salida</th>
+                                </tr>
+                                <tr>
+                                    <td>' . $arrData["his_fecha"] . '</td>
+                                    <td>' . $arrData["modelo"] . '</td>
+                                    <td>' . $prediccion["output_dir"] . '</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="additional-info">
+                            <h3>Información Adicional</h3>
+                            ' . $detecciones["additional_info"]["description"] . '
+                        </div>
+                    </div>
+                </body>';
+
+            $mpdf->WriteHTML($html);
+
+            // Generar PDF
+            $pdfContent = $mpdf->Output('', 'S');
+            // Configurar headers para mostrar en línea
+            $response = $response->withHeader('Content-Type', 'application/pdf')
+                ->withHeader('Content-Disposition', 'inline; filename="' . $fileName . '.pdf"');
+            $pdfContent = $mpdf->Output('', 'S');
+            $response->getBody()->write($pdfContent);
+            return $response;
+        } catch (Exception $e) {
+            return $this->respondWithJson($response, ["error" => $e->getMessage()]);
+        }
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 02-12-2024 a las 19:12:13
+-- Tiempo de generación: 03-12-2024 a las 00:03:37
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -146,7 +146,14 @@ CREATE TABLE `re_historial_identificacion` (
 --
 
 INSERT INTO `re_historial_identificacion` (`idhistorial`, `id_detalle_modelo`, `idusuario`, `his_img`, `his_tiempo`, `his_inicio`, `his_fin`, `his_index`, `his_prediccion`, `his_fecha`) VALUES
-(1, 4, 1, '', '16s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e0555451162.05552492\\/enrrollador-de-la-hoja-6724099308500.jpg\",\"detections\":[{\"class\":\"Gusano enrollador de la hoja\",\"confidence\":0.8570408225059509,\"bbox\":{\"x1\":2,\"y1\":0,\"x2\":498,\"y2\":374},\"additional_info\":{\"description\":\"<p>Gusano enrollador de la hoja - Cnaphalocrocis medinalis (Lepidoptera: Crambinae)<\\/p>\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-enrollador-de-la-hoja\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-enrollador-de-la-hoja.jpg\"}}],\"timestamp\":\"2024-12-02T14:07:16.222021\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Gusano enrollador de la hoja\":1},\"average_confidence\":0.8570408225059509},\"output_dir\":\"predicciones\\/20241202140701\",\"execution_time\":\"16s\",\"idmodelo\":4}', '2024-12-02 14:07:17');
+(1, 4, 1, '', '16s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e0555451162.05552492\\/enrrollador-de-la-hoja-6724099308500.jpg\",\"detections\":[{\"class\":\"Gusano enrollador de la hoja\",\"confidence\":0.8570408225059509,\"bbox\":{\"x1\":2,\"y1\":0,\"x2\":498,\"y2\":374},\"additional_info\":{\"description\":\"<p>Gusano enrollador de la hoja - Cnaphalocrocis medinalis (Lepidoptera: Crambinae)<\\/p>\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-enrollador-de-la-hoja\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-enrollador-de-la-hoja.jpg\"}}],\"timestamp\":\"2024-12-02T14:07:16.222021\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Gusano enrollador de la hoja\":1},\"average_confidence\":0.8570408225059509},\"output_dir\":\"predicciones\\/20241202140701\",\"execution_time\":\"16s\",\"idmodelo\":4}', '2024-12-02 14:07:17'),
+(2, 4, 1, '', '16s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e3edb22c554.56688513\\/download (73).jpg\",\"detections\":[{\"class\":\"Falso medidor\",\"confidence\":0.3578399419784546,\"bbox\":{\"x1\":0,\"y1\":11,\"x2\":1024,\"y2\":782},\"additional_info\":{\"description\":\"\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/falso-medidor\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/falso-medidor.jpeg\"}},{\"class\":\"Gusano cogollero\",\"confidence\":0.3561653792858124,\"bbox\":{\"x1\":0,\"y1\":13,\"x2\":1024,\"y2\":786},\"additional_info\":{\"description\":\"\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-cogollero\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-cogollero.jpg\"}}],\"timestamp\":\"2024-12-02T18:12:42.818812\",\"summary\":{\"total_detections\":2,\"classes_detected\":{\"Falso medidor\":1,\"Gusano cogollero\":1},\"average_confidence\":0.3570026606321335},\"output_dir\":\"predicciones\\/20241202181227\",\"execution_time\":\"16s\",\"idmodelo\":4}', '2024-12-02 18:12:43'),
+(3, 4, 1, '', '16s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e3f91de9741.51297279\\/download (192).jpg\",\"detections\":[{\"class\":\"Falso medidor\",\"confidence\":0.6768941879272461,\"bbox\":{\"x1\":0,\"y1\":0,\"x2\":1024,\"y2\":965},\"additional_info\":{\"description\":\"\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/falso-medidor\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/falso-medidor.jpeg\"}}],\"timestamp\":\"2024-12-02T18:15:44.447000\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Falso medidor\":1},\"average_confidence\":0.6768941879272461},\"output_dir\":\"predicciones\\/20241202181529\",\"execution_time\":\"16s\",\"idmodelo\":4}', '2024-12-02 18:15:45'),
+(4, 4, 1, '', '17s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e40b4cf9720.30605400\\/TG9666_Spodoptera_frugiperda1.jpg\",\"detections\":[{\"class\":\"Gusano cogollero\",\"confidence\":0.4539601504802704,\"bbox\":{\"x1\":0,\"y1\":1,\"x2\":300,\"y2\":224},\"additional_info\":{\"description\":\"\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-cogollero\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-cogollero.jpg\"}}],\"timestamp\":\"2024-12-02T18:20:36.076755\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Gusano cogollero\":1},\"average_confidence\":0.4539601504802704},\"output_dir\":\"predicciones\\/20241202182020\",\"execution_time\":\"17s\",\"idmodelo\":4}', '2024-12-02 18:20:37'),
+(5, 4, 1, '', '15s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e41892d59c8.63131369\\/TG9666_Spodoptera_frugiperda1.jpg\",\"detections\":[{\"class\":\"Gusano cogollero\",\"confidence\":0.4539601504802704,\"bbox\":{\"x1\":0,\"y1\":1,\"x2\":300,\"y2\":224},\"additional_info\":{\"description\":\"\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-cogollero\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-cogollero.jpg\"}}],\"timestamp\":\"2024-12-02T18:24:07.627748\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Gusano cogollero\":1},\"average_confidence\":0.4539601504802704},\"output_dir\":\"predicciones\\/20241202182353\",\"execution_time\":\"15s\",\"idmodelo\":4}', '2024-12-02 18:24:08'),
+(6, 4, 1, '', '17s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e4480efd664.71281616\\/TG9666_Spodoptera_frugiperda1.jpg\",\"detections\":[{\"class\":\"Gusano cogollero\",\"confidence\":0.4539601504802704,\"bbox\":{\"x1\":0,\"y1\":1,\"x2\":300,\"y2\":224},\"additional_info\":{\"description\":\"\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-cogollero\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-cogollero.jpg\"}}],\"timestamp\":\"2024-12-02T18:36:48.365394\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Gusano cogollero\":1},\"average_confidence\":0.4539601504802704},\"output_dir\":\"predicciones\\/20241202183632\",\"execution_time\":\"17s\",\"idmodelo\":4}', '2024-12-02 18:36:49'),
+(7, 4, 1, '', '15s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e449e664507.17613637\\/TG9666_Spodoptera_frugiperda1.jpg\",\"detections\":[{\"class\":\"Gusano cogollero\",\"confidence\":0.4539601504802704,\"bbox\":{\"x1\":0,\"y1\":1,\"x2\":300,\"y2\":224},\"additional_info\":{\"description\":\"\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-cogollero\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-cogollero.jpg\"}}],\"timestamp\":\"2024-12-02T18:37:16.508898\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Gusano cogollero\":1},\"average_confidence\":0.4539601504802704},\"output_dir\":\"predicciones\\/20241202183702\",\"execution_time\":\"15s\",\"idmodelo\":4}', '2024-12-02 18:37:17'),
+(8, 4, 1, '', '16s', 'no disponible', 'no disponible', 0, '{\"success\":true,\"image_path\":\"C:\\\\Users\\\\LEENH\\\\AppData\\\\Local\\\\Temp\\/detection-ai_upload_674e4a8e851f56.71026344\\/download (1).jpg\",\"detections\":[{\"class\":\"Gusano enrollador de la hoja\",\"confidence\":0.9209484457969666,\"bbox\":{\"x1\":16,\"y1\":0,\"x2\":1010,\"y2\":673},\"additional_info\":{\"description\":\"<p>Gusano enrollador de la hoja - Cnaphalocrocis medinalis (Lepidoptera: Crambinae)<\\/p>\",\"url\":\"http:\\/\\/plagas-arroz.localhost\\/admin\\/plagas\\/gusano-enrollador-de-la-hoja\",\"image\":\"http:\\/\\/plagas-arroz.localhost\\/\\/img\\/plagas\\/gusano-enrollador-de-la-hoja.jpg\"}}],\"timestamp\":\"2024-12-02T19:02:37.117387\",\"summary\":{\"total_detections\":1,\"classes_detected\":{\"Gusano enrollador de la hoja\":1},\"average_confidence\":0.9209484457969666},\"output_dir\":\"predicciones\\/20241202190222\",\"execution_time\":\"16s\",\"idmodelo\":4}', '2024-12-02 19:02:38');
 
 -- --------------------------------------------------------
 
@@ -185,6 +192,95 @@ CREATE TABLE `sis_centinela` (
   `url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `sis_centinela`
+--
+
+INSERT INTO `sis_centinela` (`idcentinela`, `codigo`, `ip`, `agente`, `method`, `url`, `fecha_registro`) VALUES
+(10596, 2596, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 14:16:48'),
+(10597, 2308, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:09:21'),
+(10598, 5923, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:11:10'),
+(10599, 2358, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:11:11'),
+(10600, 9080, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:11:39'),
+(10601, 3463, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:11:39'),
+(10602, 9586, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:12:01'),
+(10603, 5097, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:12:01'),
+(10604, 8024, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:12:47'),
+(10605, 1234, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:12:47'),
+(10606, 6678, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:12:57'),
+(10607, 2524, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:12:57'),
+(10608, 3151, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:29:00'),
+(10609, 1640, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:29:02'),
+(10610, 3564, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:29:40'),
+(10611, 4643, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:29:40'),
+(10612, 8324, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:29:57'),
+(10613, 8206, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:29:57'),
+(10614, 3032, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 17:30:22'),
+(10615, 2133, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 17:30:22'),
+(10616, 1657, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:12:03'),
+(10617, 2692, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:12:05'),
+(10618, 2262, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/prediccion', '2024-12-02 18:12:27'),
+(10619, 9834, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:14:46'),
+(10620, 7666, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:14:46'),
+(10621, 2356, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/prediccion', '2024-12-02 18:15:29'),
+(10622, 1752, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:16:00'),
+(10623, 7388, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:16:01'),
+(10624, 6744, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:16:21'),
+(10625, 1899, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:16:22'),
+(10626, 1952, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:18:59'),
+(10627, 3228, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:18:59'),
+(10628, 1045, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:19:42'),
+(10629, 4331, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:19:42'),
+(10630, 7757, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:20:01'),
+(10631, 6295, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:20:02'),
+(10632, 6528, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/prediccion', '2024-12-02 18:20:20'),
+(10633, 8928, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:21:42'),
+(10634, 3570, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:21:42'),
+(10635, 6351, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:23:38'),
+(10636, 4833, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:23:38'),
+(10637, 6339, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/prediccion', '2024-12-02 18:23:53'),
+(10638, 6563, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/5', '2024-12-02 18:24:24'),
+(10639, 2580, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 18:36:27'),
+(10640, 8206, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 18:36:27'),
+(10641, 3475, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/prediccion', '2024-12-02 18:36:32'),
+(10642, 9446, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/6', '2024-12-02 18:36:53'),
+(10643, 7858, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/prediccion', '2024-12-02 18:37:02'),
+(10644, 6042, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:37:24'),
+(10645, 2057, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:37:24'),
+(10646, 2261, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:37:24'),
+(10647, 3283, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:38:24'),
+(10648, 6127, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:38:24'),
+(10649, 6256, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:38:24'),
+(10650, 7479, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:38:55'),
+(10651, 4305, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:38:55'),
+(10652, 6041, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:38:55'),
+(10653, 3031, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:39:25'),
+(10654, 9421, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:39:25'),
+(10655, 4674, ' IP: 127.0.0.1', 'No existe', 'GET', '/logo.png', '2024-12-02 18:39:25'),
+(10656, 7315, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:41:55'),
+(10657, 3963, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:42:20'),
+(10658, 7562, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:43:44'),
+(10659, 5154, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:47:19'),
+(10660, 1446, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:48:21'),
+(10661, 4052, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:48:49'),
+(10662, 8714, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:49:49'),
+(10663, 5336, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:50:25'),
+(10664, 1278, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:51:24'),
+(10665, 7879, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:52:41'),
+(10666, 6816, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:54:35'),
+(10667, 8768, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:55:06'),
+(10668, 9459, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:56:13'),
+(10669, 9133, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:56:30'),
+(10670, 3644, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:57:30'),
+(10671, 9693, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:58:11'),
+(10672, 2017, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 18:58:30'),
+(10673, 6896, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/7', '2024-12-02 19:01:56'),
+(10674, 3051, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion', '2024-12-02 19:02:16'),
+(10675, 1366, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/js/popper.min.js.map', '2024-12-02 19:02:17'),
+(10676, 7337, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'POST', '/admin/prediccion', '2024-12-02 19:02:22'),
+(10677, 8229, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/8', '2024-12-02 19:02:42'),
+(10678, 7824, ' IP: ::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'GET', '/admin/prediccion/pdf/8', '2024-12-02 19:03:04');
 
 -- --------------------------------------------------------
 
@@ -476,7 +572,7 @@ ALTER TABLE `re_enfermedades`
 -- AUTO_INCREMENT de la tabla `re_historial_identificacion`
 --
 ALTER TABLE `re_historial_identificacion`
-  MODIFY `idhistorial` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idhistorial` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `re_modelo`
@@ -488,7 +584,7 @@ ALTER TABLE `re_modelo`
 -- AUTO_INCREMENT de la tabla `sis_centinela`
 --
 ALTER TABLE `sis_centinela`
-  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10596;
+  MODIFY `idcentinela` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10679;
 
 --
 -- AUTO_INCREMENT de la tabla `sis_menus`
