@@ -341,6 +341,49 @@ class PlagasController extends Controller
         }
     }
 
+    public function renombrarImagenes($request, $response)
+    {
+        $model = new TableModel;
+        $model->setTable("re_configuracion");
+        $model->setId("idconfig");
+
+        $textData = $model->first();
+        $arrData = json_decode($textData['valor'], true);
+        $directory_path = $arrData["carpeta_img_entrenamiento"];
+        $prefix = "sogata-del-arroz";
+
+        $ruta = $directory_path . "/$prefix";
+
+        // Obtener lista de archivos existentes
+        $archivos  = scandir($ruta);
+
+        // Extensiones de archivo de imagen permitidas
+        $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'gif'];
+        $contador = 1;
+
+        foreach ($archivos as $archivo) {
+            $extension = pathinfo($archivo, PATHINFO_EXTENSION);
+
+            // Verificar si el archivo es una imagen
+            if (in_array(strtolower($extension), $extensionesPermitidas)) {
+                $nuevoNombre = $prefix . '-' . addCeros($contador, 4) . '.' . $extension;
+
+                // Renombrar el archivo
+                rename($ruta . '/' . $archivo, $ruta . '/' . $nuevoNombre);
+
+                $contador++;
+                dep([
+                    "archivo original" => $archivo,
+                    "nuevo nombre" => $nuevoNombre,
+                    "ruta" => $ruta
+                ]);
+            }
+        }
+
+        dep("Se han renombrado " . ($contador - 1) . " imágenes en la ruta: " . $ruta, 1);
+        return $this->respondWithJson($response,  "Se han renombrado " . ($contador - 1) . " imágenes en la ruta: " . $ruta);
+    }
+
     public function uploadImgEntre($request, $response)
     {
         $data = ($request->getParsedBody());
@@ -359,9 +402,26 @@ class PlagasController extends Controller
         $arrData = json_decode($textData['valor'], true);
 
         try {
+            // Obtener el número más alto de los archivos existentes
+            $carpeta_imagenes = $arrData['carpeta_img_entrenamiento'] . '/' . $nombre_carpeta;
+            $archivos = scandir($carpeta_imagenes);
+            $numero_max = 0;
+
+            foreach ($archivos as $archivo) {
+                if (preg_match('/^' . $nombre_carpeta . '-(\d+)\./', $archivo, $matches)) {
+                    $numero = intval($matches[1]);
+                    if ($numero > $numero_max) {
+                        $numero_max = $numero;
+                    }
+                }
+            }
+
+            // Incrementar el número más alto para el nuevo archivo
+            $nuevo_numero = $numero_max + 1;
+
             $imageHandler = new ImageHandler($_FILES["file"]);
             $responseUpload = $imageHandler
-                ->setName($nombre_carpeta . '-' . uniqid())
+                ->setName($nombre_carpeta . '-' . addCeros($nuevo_numero, 4))
                 ->setMinSize(1024) // Mínimo de 1KB
                 ->setMaxSize(10485760) // Máximo de 10MB
                 ->setMime(['image/jpeg', 'image/png'])

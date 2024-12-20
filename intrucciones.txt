@@ -25,3 +25,6 @@ conda env list #para ver los entornos virtuales
 
 # Cponsiderar el redimensionamiento de las imagenes para que el modelo pueda procesarlas
 considerar el uso de Yolo v5
+
+# para visualizar los datos en tensorboard
+tensorboard --logdir C:\laragon\www\plagas-arroz\public_html\modelo_entrenado\modelo-yolo-v5_20241220_100607

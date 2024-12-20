@@ -17,11 +17,12 @@ use App\Controllers\ModuloIA\EntrenamientoController;
 use App\Controllers\ModuloIA\GenerarDatosController;
 use App\Controllers\ModuloIA\IAController;
 use App\Controllers\ModuloIA\PlagasController;
-
+use App\Controllers\ModuloIA\ReemplazoController;
 // Middlewares
 use App\Middleware\AdminMiddleware;
 use App\Middleware\LoginAdminMiddleware;
 use App\Middleware\PermissionMiddleware;
+use FastRoute\DataGenerator\GroupPosBased;
 
 $app->group('/admin/login', function (RouteCollectorProxy $group) {
     $group->get('', LoginController::class . ':index')->add(new AdminMiddleware);
@@ -122,6 +123,7 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
     // Rutas relacionadas a las plagas y enfermedades del arroz
     $group->group('/plagas', function (RouteCollectorProxy $group) {
         $group->get('', PlagasController::class . ':index');
+        $group->get("/escanear", PlagasController::class . ":renombrarImagenes");
         $group->get('/[{slug}]', PlagasController::class . ':verPlaga');
 
         $group->post('', PlagasController::class . ':list');
@@ -132,5 +134,9 @@ $app->group('/admin', function (RouteCollectorProxy $group) {
         $group->post('/view', PlagasController::class . ':viewImgEntre');
         $group->post("/upload", PlagasController::class . ":uploadImgEntre");
         $group->post("/destroy", PlagasController::class . ":delImgEntre");
+    });
+
+    $group->group('/match', function (RouteCollectorProxy $group) {
+        $group->get("", ReemplazoController::class . ":index");
     });
 })->add(new LoginAdminMiddleware());
